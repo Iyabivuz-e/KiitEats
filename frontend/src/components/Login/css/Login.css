@@ -1,0 +1,11 @@
+
+.errors{
+    display: none;
+}
+
+.active{
+    background-color: #2563eb;
+    color:white;
+    padding:8px 50px;
+    border-radius:5px;
+}
