@@ -12,3 +12,15 @@ body {
     --tw-bg-opacity: 1;
     background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
+
+.navabar-container{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  position: sticky;
+  top:0;
+  z-index:999999;
+  /* box-shadow: 2px 0px 4px rgba(0,0,0,0.5); */
+}

@@ -1,43 +1,99 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useRef} from "react";
+import { useForm } from "react-hook-form";
 
-const Register = () => {
-  const handleChange = () => {};
-  const handleSubmit = () => {};
+const Register = ({ registerSuccess }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset,
+  } = useForm();
+
+  // Confirm password validations.
+  const password = useRef({});
+  password.current = watch("password", "");
+
+  const onsSubmit = (data) => {
+    console.log(data);
+    reset();
+    registerSuccess();
+  };
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3 flex-col w-[450px] ">
+    <form
+      onSubmit={handleSubmit(onsSubmit)}
+      className="flex gap-3 flex-col w-[450px] "
+    >
       <input
         className="p-3 outline-none text-sm rounded-sm"
         type="text"
         name="username"
-        onChange={handleChange}
+        {...register("username", {
+          required: "Username is required",
+          pattern: {
+            value: /^[a-zA-Z0-9_.-]+$/,
+            message: "Please enter a valid username",
+          },
+        })}
         placeholder="Enter your username"
       />
-      <small className="errors -mt-3 text-red-600">Error message</small>
+      {errors.username && (
+        <small className="-mt-3 text-red-600 error-message-on">
+          {errors.username.message}
+        </small>
+      )}
       <input
         className="p-3 outline-none text-sm rounded-sm"
         type="email"
         name="email"
-        onChange={handleChange}
+        {...register("email", {
+          required: "Email is required",
+          pattern: {
+            value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+            message: "Please enter a valid email address",
+          },
+        })}
         placeholder="Ennter your kiit mail id"
       />
-      <small className="errors -mt-3 text-red-600">Error message</small>
+      {errors.email && (
+        <small className="-mt-3 text-red-600 error-message-on">
+          {errors.email.message}
+        </small>
+      )}
       <input
         className="p-3 outline-none text-sm rounded-sm "
         type="password"
         name="password"
-        onChange={handleChange}
+        {...register("password", {
+          required: "Password is required",
+          minLength: {
+            value: 8,
+            message: "Password must be at least 8 characters",
+          },
+        })}
         placeholder="Enter your password"
       />
-      <small className="errors -mt-3 text-red-600">Error message</small>
+      {errors.password && (
+        <small className="-mt-3 text-red-600 error-message-on">
+          {errors.password.message}
+        </small>
+      )}
       <input
         className="p-3 outline-none text-sm rounded-sm "
         type="password"
-        name="repeat password"
-        onChange={handleChange}
+        name="repeat_password"
+        {...register("repeat_password", {
+          required: "Repeat password is required",
+          validate: (value) =>
+            value === password.current || "The password do not match",
+        })}
         placeholder="Repeat your password"
       />
-      <small className="errors -mt-3 text-red-600">Error message</small>
+      {errors.repeat_password && (
+        <small className="-mt-3 text-red-600 error-message-on">
+          {errors.repeat_password.message}
+        </small>
+      )}
       <button className="login-btn bg-blue-600 text-white p-1 text-lg rounded mt-2">
         Sign Up
       </button>

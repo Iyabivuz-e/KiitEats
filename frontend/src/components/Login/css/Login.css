@@ -1,6 +1,9 @@
 
-.errors{
+.error-message{
     display: none;
+}
+.error-message-on{
+    display: flex;
 }
 
 .active{
