@@ -1,18 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginForm = () => {
   // ****************LOGIN VALIDATIONS****************
-
   const navigate = useNavigate();
-
-  const goToHome = () => {
-    // setIsLoggedIn(false);
-    navigate('/')
-  };
-
   const {
     register,
     handleSubmit,
@@ -20,10 +14,29 @@ const LoginForm = () => {
     reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  // Handling the login
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/login",
+        data
+      );
+      console.log("Response status:", response.status);
+      console.log("Response data:", response.data);
+       if (response.status === 200) {
+         alert("Logged In Successfully");
+         navigate("/");
+       } else if (response.status === 401) {
+         alert("Incorrect email or password");
+       } else if (response.status === 404) {
+         alert("User not found");
+       } else {
+         alert("An error occurred. Please try again later.");
+       }
+      } catch (error) {
+      console.log(error);
+    }
     reset();
-    goToHome()
   };
 
   return (
@@ -75,7 +88,7 @@ const LoginForm = () => {
         Forgot password?
       </Link>
       <button
-      type="submit"
+        type="submit"
         className="login-btn bg-blue-600 text-white p-1 text-lg rounded"
       >
         Login

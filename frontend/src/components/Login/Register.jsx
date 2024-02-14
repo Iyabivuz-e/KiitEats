@@ -1,5 +1,6 @@
 import React, {useRef} from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Register = ({ registerSuccess }) => {
   const {
@@ -14,8 +15,29 @@ const Register = ({ registerSuccess }) => {
   const password = useRef({});
   password.current = watch("password", "");
 
-  const onsSubmit = (data) => {
-    console.log(data);
+  const onsSubmit = async(data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/register",
+        data
+      );
+      console.log("Response status:", response.status);
+      console.log("Response data:", response.data);
+
+       if (response.status === 200) {
+         alert(
+           "User registered successfully. Please check your email for verification"
+         );
+      //  } else if (response.status === 401) {
+      //    alert("Incorrect email or password");
+      //  } else if (response.status === 404) {
+      //    alert("User not found");
+       } else {
+         alert("An error occurred. Please try again later.");
+       }
+      } catch (error) {
+      console.log(error);
+    }
     reset();
     registerSuccess();
   };

@@ -1,11 +1,12 @@
 // Home.js
 import React from "react";
 import Navbar from "../components/Home/Navbar/Navbar";
+import Hero from "../components/Home/Hero/Hero";
 
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to the Home component</h1>
+      <Hero/>
     </div>
   );
 };

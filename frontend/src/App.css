@@ -23,4 +23,7 @@ body {
   top:0;
   z-index:999999;
   /* box-shadow: 2px 0px 4px rgba(0,0,0,0.5); */
+   --tw-bg-opacity: 1;
+    background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
+
