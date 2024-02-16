@@ -10,7 +10,10 @@ const Hero = () => {
         src={three}
         alt="image slider"
       />
-      <div className="w-full h-full absolute top-0 flex justify-center items-center bg-[rgb(0,0,0,0.6)]">
+      <div className="w-full h-full absolute top-0 flex flex-col justify-center items-center bg-[rgb(0,0,0,0.6)] px-20">
+        <h1 className="mb-4 text-orange-600 text-2xl text-center w-full">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        </h1>
         <div className="w-[500px] px-[10px] py-0 flex items-center rounded-3xl bg-[rgb(203,213,225)]">
           <SearchIcon className="text-sm text-gray-600" />
           <input

@@ -17,7 +17,7 @@ const registerUser = async (db, req, res) => {
     }
 
     const verificationToken = uuid.v4(); // Generating verification token
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert user data into database with verification token
     const [result] = await db.query(

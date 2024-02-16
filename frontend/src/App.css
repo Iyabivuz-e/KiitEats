@@ -27,3 +27,13 @@ body {
     background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
+/* Food Courts */
+.boxes{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* padding:20px */
+}
+/* .borders{
+  width:350px;
+  height: 300px;
+} */

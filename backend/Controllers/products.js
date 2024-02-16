@@ -5,7 +5,14 @@ const getAllProducts = async (req, res) => {
   try {
     await db.query("USE KiitEats");
 
-    const [products] = await db.query("SELECT * FROM product");
+    let query = "SELECT * FROM product";
+
+    if (req.query.campusAddress) {
+      query += " WHERE prodAddress = ?";
+    }
+
+    const [products] = await db.query(query, [req.query.campusAddress]);
+
     res.status(200).json(products);
   } catch (error) {
     console.error(error);
@@ -40,16 +47,26 @@ const getSingleProduct = async (req, res) => {
 // ***********ADD A PRODUCT**********
 const addProduct = async (req, res) => {
   try {
-    // Validate that prodName is provided
-    if (!req.body.prodName) {
-      return res.status(400).json({ message: "Product name is required" });
+    // Validate that all required fields are provided
+    const { prodName, prodImage, prodAddress, prodDescription, prodPrice } =
+      req.body;
+    if (
+      !prodName ||
+      !prodImage ||
+      !prodAddress ||
+      !prodDescription ||
+      !prodPrice
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all product details" });
     }
 
-    await db.query("USE KiitEats");
-
-    const [result] = await db.query("INSERT INTO product(prodName) VALUES(?)", [
-      req.body.prodName,
-    ]);
+    // No need to explicitly use the database
+    const [result] = await db.query(
+      "INSERT INTO product(prodName, prodImage, prodAddress, prodDescription, prodPrice) VALUES (?, ?, ?, ?, ?)",
+      [prodName, prodImage, prodAddress, prodDescription, prodPrice]
+    );
 
     res.status(200).json({ message: "A product has been added successfully" });
   } catch (error) {
@@ -57,6 +74,7 @@ const addProduct = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // ***********DELETE A PRODUCT**********
 const deleteProduct = async (req, res) => {
