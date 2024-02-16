@@ -19,11 +19,11 @@ const Navbar = () => {
           <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
             <Link>Menu</Link>
           </li>
-          <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
+          {/* <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
             <Link>Food</Link>
-          </li>
+          </li> */}
           <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
-            <Link>Food Court</Link>
+            <Link>Food Courts</Link>
           </li>
           <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
             <Link to="/login">Login/Register</Link>
