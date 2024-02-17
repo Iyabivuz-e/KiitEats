@@ -1,30 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import campusImage from "../../assets/two.jpg";
+import { myContext } from "../../context/AppContext";
 
 const Product = () => {
   const { campusAddress } = useParams();
-  const [products, setProducts] = useState([]);
+  const { products, fetchProducts } = useContext(myContext);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/products?campusAddress=${campusAddress}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setProducts(data);
-        } else {
-          console.error("Failed to fetch products");
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [campusAddress]);
+    fetchProducts(campusAddress);
+  }, [campusAddress, fetchProducts]);
 
   return (
     <div className="w-full h-[350px] relative">

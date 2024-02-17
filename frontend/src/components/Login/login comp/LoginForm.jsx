@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { myContext } from "../../../context/AppContext";
 
 const LoginForm = () => {
   // ****************LOGIN VALIDATIONS****************
+  const {login} = useContext(myContext)
   const navigate = useNavigate();
   const {
     register,
@@ -21,9 +23,9 @@ const LoginForm = () => {
         "http://localhost:5000/api/user/login",
         data
       );
-      console.log("Response status:", response.status);
-      console.log("Response data:", response.data);
+
        if (response.status === 200) {
+         login()
          alert("Logged In Successfully");
          navigate("/");
        } else if (response.status === 401) {

@@ -1,7 +1,14 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Link } from 'react-router-dom'
+import { myContext } from '../../../context/AppContext';
 
 const Navbar = () => {
+
+    const { isLoggedIn, logout } = useContext(myContext);
+    const handleLogout = () => {
+      logout();
+    }
+
   return (
     <div className="navabar-container">
       <div className="logo">
@@ -11,23 +18,29 @@ const Navbar = () => {
           </h1>
         </Link>
       </div>
+
       <div className="navigations">
         <ul className="flex gap-5">
-          <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
+          <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
             <Link to="/">Home</Link>
           </li>
-          <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
-            <Link>Menu</Link>
-          </li>
-          {/* <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
-            <Link>Food</Link>
-          </li> */}
-          <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
+          {isLoggedIn && (
+            <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
+              <Link>Menu</Link>
+            </li>
+          )}
+          <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
             <Link>Food Courts</Link>
           </li>
-          <li className='text-blue-700 hover:text-orange-600 transition-all duration-400 text-base'>
-            <Link to="/login">Login/Register</Link>
-          </li>
+          {isLoggedIn ? (
+            <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
+              <Link onClick={handleLogout}>Logout</Link>
+            </li>
+          ) : (
+            <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
+              <Link to="/login">Login/Register</Link>
+            </li>
+          )}
         </ul>
       </div>
     </div>

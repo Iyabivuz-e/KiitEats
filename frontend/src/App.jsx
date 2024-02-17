@@ -5,20 +5,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Navbar from "./components/Home/Navbar/Navbar";
 import Product from "./components/Product/Product";
+import ContextProvider from "./context/AppContext";
 
 function App() {
-  // const [isLoggedIn, setIsLoggedIn] =useState(true);
 
   return (
     <div className="h-full">
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/menu/:campusAddress" element={<Product />} />
-        </Routes>
-      </BrowserRouter>
+      <ContextProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/menu/:campusAddress" element={<Product />} />
+          </Routes>
+        </BrowserRouter>
+      </ContextProvider>
     </div>
   );
 }

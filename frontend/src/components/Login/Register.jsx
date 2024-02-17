@@ -21,8 +21,6 @@ const Register = ({ registerSuccess }) => {
         "http://localhost:5000/api/user/register",
         data
       );
-      console.log("Response status:", response.status);
-      console.log("Response data:", response.data);
 
        if (response.status === 200) {
          alert(
