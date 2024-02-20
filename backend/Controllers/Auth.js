@@ -1,5 +1,4 @@
 // ***************LOGIN / REGISTER**************
-
 // Register a user
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");

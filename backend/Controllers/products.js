@@ -1,4 +1,31 @@
 const db = require("../Database/database");
+const multer = require("multer");
+const path = require("path");
+
+// *******HANDLING THE FILES********
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../assets"));
+  },
+  filename: (req, file, cb) => {
+    const extension = path.extname(file.originalname);
+    cb(null, `${new Date().toISOString().replace(/:/g, "-")}.${extension}`);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      return cb(new Error("Only image files are allowed"));
+    }
+    cb(null, true);
+  },
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5MB file size limit
+  },
+}).single("prodImage");
+
 
 // ***********GET ALL PRODUCTS**********
 const getAllProducts = async (req, res) => {
@@ -48,21 +75,18 @@ const getSingleProduct = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     // Validate that all required fields are provided
-    const { prodName, prodImage, prodAddress, prodDescription, prodPrice } =
-      req.body;
-    if (
-      !prodName ||
-      !prodImage ||
-      !prodAddress ||
-      !prodDescription ||
-      !prodPrice
-    ) {
+    const { prodName, prodAddress, prodDescription, prodPrice } = req.body;
+    if (!prodName || !prodAddress || !prodDescription || !prodPrice) {
       return res
         .status(400)
         .json({ message: "Please provide all product details" });
     }
 
-    // No need to explicitly use the database
+    // Access uploaded file information from req.file
+    const prodImage = path.join("../assets", req.file.filename);
+    console.log(prodImage);
+
+    // Proceed with the database query using prodImage
     const [result] = await db.query(
       "INSERT INTO product(prodName, prodImage, prodAddress, prodDescription, prodPrice) VALUES (?, ?, ?, ?, ?)",
       [prodName, prodImage, prodAddress, prodDescription, prodPrice]
@@ -74,7 +98,6 @@ const addProduct = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 // ***********DELETE A PRODUCT**********
 const deleteProduct = async (req, res) => {
@@ -122,4 +145,5 @@ module.exports = {
   addProduct,
   deleteProduct,
   updateProduct,
+  upload: upload
 };

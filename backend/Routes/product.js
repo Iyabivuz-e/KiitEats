@@ -1,11 +1,14 @@
+// const multer = require("multer");
 const router = require("express").Router();
 const {
   getAllProducts,
   addProduct,
   getSingleProduct,
   deleteProduct,
-  updateProduct
+  updateProduct,
+  upload,
 } = require("../Controllers/products");
+
 
 // Get All the product
 router.get("/", getAllProducts);
@@ -14,7 +17,7 @@ router.get("/", getAllProducts);
 router.get("/:id", getSingleProduct);
 
 // Add a product
-router.post("/", addProduct);
+router.post("/", upload, addProduct);
 
 // Delete the product
 router.delete("/:id", deleteProduct);

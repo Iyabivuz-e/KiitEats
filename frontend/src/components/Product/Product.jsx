@@ -11,6 +11,10 @@ const Product = () => {
     fetchProducts(campusAddress);
   }, [campusAddress, fetchProducts]);
 
+    if (!products) {
+      return <div>Loading...</div>;
+    }
+
   return (
     <div className="w-full h-[350px] relative">
       <img
@@ -30,7 +34,7 @@ const Product = () => {
       ) : (
         <ul className="mt-5 px-5 grid grid-cols-3 gap-4 pb-3">
           {products.map((product) => (
-            <Link to="" className="rounded-lg shadow " key={product.id}>
+            <Link to={`/menu/foods/${product.id}`} className="rounded-lg shadow " key={product.id}>
               <div className="h-[230px]">
                 <img
                   src={campusImage}

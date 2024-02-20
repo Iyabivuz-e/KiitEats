@@ -32,6 +32,11 @@ const Navbar = () => {
           <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
             <Link>Food Courts</Link>
           </li>
+          {isLoggedIn && (
+            <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
+              <Link>Cart</Link>
+            </li>
+          )}
           {isLoggedIn ? (
             <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
               <Link onClick={handleLogout}>Logout</Link>

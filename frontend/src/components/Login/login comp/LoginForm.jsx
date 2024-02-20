@@ -28,18 +28,34 @@ const LoginForm = () => {
          login()
          alert("Logged In Successfully");
          navigate("/");
-       } else if (response.status === 401) {
+       } 
+
+       if (response.status === 401) {
          alert("Incorrect email or password");
-       } else if (response.status === 404) {
+       }
+
+       if (response.status === 404) {
          alert("User not found");
-       } else {
+       }
+       else {
          alert("An error occurred. Please try again later.");
        }
+
       } catch (error) {
       console.log(error);
     }
     reset();
   };
+
+
+  // else if (response.status === 401) {
+  //        alert("Incorrect email or password");
+  //      } else if (response.status === 404) {
+  //        alert("User not found");
+  //      } else {
+  //        alert("An error occurred. Please try again later.");
+  //      }
+
 
   return (
     <form

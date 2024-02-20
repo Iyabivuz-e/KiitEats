@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { campuses } from "../../../FoodCourts";
+// import { myContext } from "../../../context/AppContext"
+
 
 const FoodCourts = () => {
+
+  // const { products } = useContext(myContext);
 
   //** Handle load more and load less buttons*** */
   const initialPreview = 6
@@ -29,7 +33,7 @@ const FoodCourts = () => {
           >
             <p className="text-lg font-semibold">{campus.campusNumber}</p>
             <p>{campus.name}</p>
-            <p>5 foods available</p>
+            {/* <p>{products.length} foods available</p> */}
           </Link>
         ))}
       </div>

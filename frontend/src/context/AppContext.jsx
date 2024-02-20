@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 export const myContext = createContext();
 
 const ContextProvider = ({ children }) => {
-  //***********CALLIONG THE APIs FOR THE PRODUCT BASED ON THE FOOD COURT CLICKED************** */
+  //***********CALLING THE APIs FOR THE PRODUCT BASED ON THE FOOD COURT CLICKED************** */
   const [products, setProducts] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
