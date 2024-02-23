@@ -2,12 +2,10 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { myContext } from "../../../context/AppContext";
 
 const LoginForm = () => {
-  // ****************LOGIN VALIDATIONS****************
-  const {login} = useContext(myContext)
+  const { login } = useContext(myContext);
   const navigate = useNavigate();
   const {
     register,
@@ -16,46 +14,32 @@ const LoginForm = () => {
     reset,
   } = useForm();
 
-  // Handling the login
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/user/login",
-        data
-      );
+      const response = await fetch("http://localhost:5000/api/user/login", {
+        method: "POST", // specify the HTTP method
+        headers: {
+          "Content-Type": "application/json", // specify the content type
+        },
+        body: JSON.stringify(data), // convert data to JSON string
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+      if (!response.ok) {
+        alert(responseData["message"]); // parse response data
+      } else {
+        alert(responseData["message"]);
+        navigate("/"); // navigate
+        login();
+      }
+      console.log(responseData);
 
-       if (response.status === 200) {
-         login()
-         alert("Logged In Successfully");
-         navigate("/");
-       } 
-
-       if (response.status === 401) {
-         alert("Incorrect email or password");
-       }
-
-       if (response.status === 404) {
-         alert("User not found");
-       }
-       else {
-         alert("An error occurred. Please try again later.");
-       }
-
-      } catch (error) {
+      // Now you can handle the response data accordingly
+    } catch (error) {
       console.log(error);
     }
-    reset();
+    reset(); // reset the form
   };
-
-
-  // else if (response.status === 401) {
-  //        alert("Incorrect email or password");
-  //      } else if (response.status === 404) {
-  //        alert("User not found");
-  //      } else {
-  //        alert("An error occurred. Please try again later.");
-  //      }
-
 
   return (
     <form
@@ -96,7 +80,6 @@ const LoginForm = () => {
         placeholder="Enter your password"
       />
 
-      {/* ****ERROR MESSAGES FOR PASSWORD*** */}
       {errors.password && (
         <small className="-mt-3 text-red-600 error-message-on">
           {errors.password.message}

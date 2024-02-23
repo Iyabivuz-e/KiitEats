@@ -7,6 +7,7 @@ import Navbar from "./components/Home/Navbar/Navbar";
 import Product from "./components/Product/Product";
 import ContextProvider from "./context/AppContext";
 import SingleProducts from "./components/SIngleProduct/SingleProducts";
+import Admin from "./components/Admin/Admin";
 
 function App() {
 
@@ -19,7 +20,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/menu/:campusAddress" element={<Product />} />
-            <Route path="/menu/foods/:id" element={<SingleProducts />} />
+            <Route path="/foods/:id" element={<SingleProducts />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </BrowserRouter>
       </ContextProvider>

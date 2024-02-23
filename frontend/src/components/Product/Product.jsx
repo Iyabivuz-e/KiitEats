@@ -34,7 +34,11 @@ const Product = () => {
       ) : (
         <ul className="mt-5 px-5 grid grid-cols-3 gap-4 pb-3">
           {products.map((product) => (
-            <Link to={`/menu/foods/${product.id}`} className="rounded-lg shadow " key={product.id}>
+            <Link
+              to={`/foods/${product.id}`}
+              className="rounded-lg shadow "
+              key={product.id}
+            >
               <div className="h-[230px]">
                 <img
                   src={campusImage}
@@ -59,9 +63,9 @@ const Product = () => {
                 >
                   Buy Now
                 </Link>
-                <button className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center ">
+                <Link className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center ">
                   Add To Cart
-                </button>
+                </Link>
               </div>
             </Link>
           ))}

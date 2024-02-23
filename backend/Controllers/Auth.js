@@ -69,8 +69,8 @@ const loginUser = async (db, req, res) => {
     const [userData] = await db.query("SELECT * FROM signUp WHERE email = ?", [
       email,
     ]);
-    if (!userData.length) {
-      return res.status(404).json({ error: "User not found" });
+    if (!userData) {
+      return res.status(404).json({ sucess: false, message: "User not found" });
     }
 
     const hashedPassword = userData[0].password;
@@ -78,13 +78,13 @@ const loginUser = async (db, req, res) => {
     // Compare hashed password with provided password
     const isPasswordMatch = await bcrypt.compare(password, hashedPassword);
     if (!isPasswordMatch) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ sucess: false, message: "Invalid credentials" });
     }
 
     // Check if user is verified
     const isVerified = userData[0].verified;
     if (!isVerified) {
-      return res.status(403).json({ error: "Email not verified" });
+      return res.status(403).json({ sucess: false, message: "Email not verified" });
     }
 
     // Proceed with login
@@ -95,10 +95,10 @@ const loginUser = async (db, req, res) => {
       token,
     ]);
 
-    res.status(200).json({ message: "Login successful", userId, token });
+    res.status(200).json({sucess: true, message: "Login successful", userId, token });
   } catch (error) {
     console.error("Error logging in user:", error);
-    res.status(500).json({ error: "Error logging in user" });
+    res.status(500).json({ sucess: false, message: "Error logging in user" });
   }
 };
 

@@ -1,20 +1,17 @@
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-const stripePay = (req, res) => {
-  stripe.charges.create(
-    {
+const stripePay = async (req, res) => {
+  try {
+    const charge = await stripe.charges.create({
       source: req.body.tokenId,
       amount: req.body.amount,
-      currecny: "usd",
-    },
-    (stripeErr, stripeRes) => {
-      if (stripeErr) {
-        res.status(500).json(stripeErr);
-      } else {
-        res.status(200).json(stripeRes);
-      }
-    }
-  );
+      currency: "inr", 
+    });
+    res.status(200).json(charge);
+  } catch (error) {
+    console.error("Error processing payment:", error);
+    res.status(500).json({ error: "Error processing payment" });
+  }
 };
 
 module.exports = stripePay;

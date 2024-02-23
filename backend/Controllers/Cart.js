@@ -8,7 +8,7 @@ const createCart = async (req, res) => {
 
   try {
     await db.query(sql, values);
-    res.status(200).json({ message: "Cart created successfully" });
+    res.status(201).json({ message: "Cart created successfully" });
   } catch (error) {
     console.error("Error creating cart:", error);
     res.status(500).json({ error: "Error creating cart" });
@@ -17,10 +17,8 @@ const createCart = async (req, res) => {
 
 // Get all carts
 const getAllCarts = async (req, res) => {
-  const sql = "SELECT * FROM cart";
-
   try {
-    const [carts] = await db.query(sql);
+    const [carts] = await db.query("SELECT * FROM cart");
     res.status(200).json(carts);
   } catch (error) {
     console.error("Error getting all carts:", error);
@@ -31,11 +29,9 @@ const getAllCarts = async (req, res) => {
 // Get a cart by ID
 const getCart = async (req, res) => {
   const { id } = req.params;
-  const sql = "SELECT * FROM cart WHERE id = ?";
-  const values = [id];
 
   try {
-    const [cart] = await db.query(sql, values);
+    const [cart] = await db.query("SELECT * FROM cart WHERE id = ?", [id]);
     if (cart.length === 0) {
       res.status(404).json({ error: "Cart not found" });
     } else {
@@ -67,11 +63,9 @@ const updateCart = async (req, res) => {
 // Delete a cart
 const deleteCart = async (req, res) => {
   const { id } = req.params;
-  const sql = "DELETE FROM cart WHERE id = ?";
-  const values = [id];
 
   try {
-    await db.query(sql, values);
+    await db.query("DELETE FROM cart WHERE id = ?", [id]);
     res.status(200).json({ message: "Cart deleted successfully" });
   } catch (error) {
     console.error("Error deleting cart:", error);

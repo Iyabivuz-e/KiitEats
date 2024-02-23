@@ -17,7 +17,7 @@ router.get("/", getAllProducts);
 router.get("/:id", getSingleProduct);
 
 // Add a product
-router.post("/", upload, addProduct);
+router.post("/",upload, addProduct);
 
 // Delete the product
 router.delete("/:id", deleteProduct);

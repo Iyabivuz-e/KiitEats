@@ -5,11 +5,11 @@ const path = require("path");
 // *******HANDLING THE FILES********
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../assets"));
+    cb(null, path.join(__dirname, "../assets/"));
   },
   filename: (req, file, cb) => {
     const extension = path.extname(file.originalname);
-    cb(null, `${new Date().toISOString().replace(/:/g, "-")}.${extension}`);
+    cb(null, Date.now() + extension); // Appending timestamp to avoid filename conflicts
   },
 });
 
@@ -74,6 +74,9 @@ const getSingleProduct = async (req, res) => {
 // ***********ADD A PRODUCT**********
 const addProduct = async (req, res) => {
   try {
+    // Access uploaded file information from req.file
+    const prodImage = path.join("../assets", req.file.filename);
+    
     // Validate that all required fields are provided
     const { prodName, prodAddress, prodDescription, prodPrice } = req.body;
     if (!prodName || !prodAddress || !prodDescription || !prodPrice) {
@@ -82,9 +85,6 @@ const addProduct = async (req, res) => {
         .json({ message: "Please provide all product details" });
     }
 
-    // Access uploaded file information from req.file
-    const prodImage = path.join("../assets", req.file.filename);
-    console.log(prodImage);
 
     // Proceed with the database query using prodImage
     const [result] = await db.query(
