@@ -8,7 +8,8 @@ import Product from "./components/Product/Product";
 import ContextProvider from "./context/AppContext";
 import SingleProducts from "./components/SIngleProduct/SingleProducts";
 import Admin from "./components/Admin/Admin";
-
+import Cart from "./components/cart/Cart";
+// import UpdateProduct from "./components/Admin/UpdateProduct";
 function App() {
 
   return (
@@ -22,6 +23,8 @@ function App() {
             <Route path="/menu/:campusAddress" element={<Product />} />
             <Route path="/foods/:id" element={<SingleProducts />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/cart" element={<Cart />} />
+            {/* <Route path="/admin/:id" element={<UpdateProduct />} /> */}
           </Routes>
         </BrowserRouter>
       </ContextProvider>

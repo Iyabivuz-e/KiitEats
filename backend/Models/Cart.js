@@ -4,9 +4,13 @@ const cartTable = async (db) => {
     await db.query(`
       CREATE TABLE IF NOT EXISTS cart (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        userId INT NOT NULL,
         itemId INT NOT NULL,
+        itemName VARCHAR(255) NOT NULL,
+        itemPrice DECIMAL(10, 2) NOT NULL,
+        itemImage VARCHAR(255) NOT NULL,
+        itemDescription VARCHAR(255) NOT NULL,
         quantity INT NOT NULL,
+        totalPrice DECIMAL(10, 2) NOT NULL,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (userId) REFERENCES signup(id),
@@ -18,4 +22,5 @@ const cartTable = async (db) => {
     console.error("Error creating cart table:", error);
   }
 };
+
 module.exports = cartTable;

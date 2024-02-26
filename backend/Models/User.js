@@ -59,13 +59,13 @@ const userTable = async (db) => {
     }
 
     //ADDING THE AN ID COLUMN IN THE TABLE
-    const [id] = await db.query("SHOW COLUMNS FROM signUp LIKE 'id'");
-    if (id.length === 0) {
+    const [userId] = await db.query("SHOW COLUMNS FROM signUp LIKE 'userId'");
+    if (userId.length === 0) {
       // If the verified column doesn't exist, add it
       await db.query(
         "ALTER TABLE signUp ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY"
       );
-      console.log("Id is added");
+      console.log("userId is added");
     }
   } catch (error) {
     console.error("Error setting up tables:", error);

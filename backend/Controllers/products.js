@@ -5,7 +5,7 @@ const path = require("path");
 // *******HANDLING THE FILES********
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../assets/"));
+    cb(null, path.join(__dirname, "/assets/"));
   },
   filename: (req, file, cb) => {
     const extension = path.extname(file.originalname);
@@ -25,7 +25,6 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5, // 5MB file size limit
   },
 }).single("prodImage");
-
 
 // ***********GET ALL PRODUCTS**********
 const getAllProducts = async (req, res) => {
@@ -75,8 +74,8 @@ const getSingleProduct = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     // Access uploaded file information from req.file
-    const prodImage = path.join("../assets", req.file.filename);
-    
+    const prodImage = path.join("/assets", req.file.filename);
+
     // Validate that all required fields are provided
     const { prodName, prodAddress, prodDescription, prodPrice } = req.body;
     if (!prodName || !prodAddress || !prodDescription || !prodPrice) {
@@ -84,7 +83,6 @@ const addProduct = async (req, res) => {
         .status(400)
         .json({ message: "Please provide all product details" });
     }
-
 
     // Proceed with the database query using prodImage
     const [result] = await db.query(
@@ -120,18 +118,24 @@ const deleteProduct = async (req, res) => {
 // ***********UPDATE A PRODUCT**********
 const updateProduct = async (req, res) => {
   try {
-    // Validate that prodName is provided
-    if (!req.body.prodName) {
-      return res.status(400).json({ message: "Product name is required" });
+    const { id } = req.params;
+    const { prodName, prodAddress, prodDescription, prodPrice } = req.body;
+
+    // Validate that all required fields are provided
+    if (!prodName || !prodAddress || !prodDescription || !prodPrice) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all product details" });
     }
 
-    await db.query("USE KiitEats");
-
-    const [result] = await db.query(
-      "UPDATE product SET prodName = ? WHERE id = ?",
-      [req.body.prodName, req.params.id]
-    );
-
+    // Update the product in the database
+    const sql = `
+      UPDATE product 
+      SET prodName = ?, prodAddress = ?, prodDescription = ?, prodPrice = ?
+      WHERE id = ?
+    `;
+    const values = [prodName, prodAddress, prodDescription, prodPrice, id];
+    await db.query(sql, values);
     res.status(200).json({ message: "Product updated successfully" });
   } catch (error) {
     console.error(error);
@@ -145,5 +149,5 @@ module.exports = {
   addProduct,
   deleteProduct,
   updateProduct,
-  upload: upload
+  upload: upload,
 };

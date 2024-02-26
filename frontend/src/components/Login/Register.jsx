@@ -26,10 +26,7 @@ const Register = ({ registerSuccess }) => {
          alert(
            "User registered successfully. Please check your email for verification"
          );
-      //  } else if (response.status === 401) {
-      //    alert("Incorrect email or password");
-      //  } else if (response.status === 404) {
-      //    alert("User not found");
+
        } else {
          alert("An error occurred. Please try again later.");
        }

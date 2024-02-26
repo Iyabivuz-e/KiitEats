@@ -2,18 +2,26 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import campusImage from "../../assets/two.jpg";
 import { myContext } from "../../context/AppContext";
+import Loader from "../../utilities/Loader";
 
 const Product = () => {
   const { campusAddress } = useParams();
-  const { products, fetchProducts } = useContext(myContext);
+  const { products, fetchProducts, addToCart } = useContext(myContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProducts(campusAddress);
+    const fetchData = async () => {
+      await fetchProducts(campusAddress);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000); // 
+    };
+    fetchData();
   }, [campusAddress, fetchProducts]);
 
-    if (!products) {
-      return <div>Loading...</div>;
-    }
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="w-full h-[350px] relative">
@@ -41,19 +49,20 @@ const Product = () => {
             >
               <div className="h-[230px]">
                 <img
-                  src={campusImage}
+                  src={product.prodImage}
                   alt="product image"
                   className="rounded-lg h-full w-full object-cover"
                 />
+                {/* {console.log(product.prodImage)} */}
               </div>
               <div className="p-3 flex flex-col gap-2">
                 <div className="flex justify-between mb-2">
                   <p className="text-lg">{product.prodName}</p>
                   <p className="text-lg text-orange-600">
-                    &#x20B9;{product.prodPrice}
+                    {/* &#x20B9;{product.prodPrice} */}
                   </p>
                 </div>
-                <p className="text-sm">{product.prodDescription}</p>
+                <p className="text-sm">&#8377;{product.prodPrice}</p>
                 <p className="text-sm">Location: {product.prodAddress}</p>
               </div>
               <div className="p-3 flex justify-between gap-2">
@@ -63,9 +72,18 @@ const Product = () => {
                 >
                   Buy Now
                 </Link>
-                <Link className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center ">
+                <Link
+                  onClick={() => addToCart(product)}
+                  className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
+                >
                   Add To Cart
                 </Link>
+                {/* <Link
+                  to={`/admin/${product.id}`}
+                  className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
+                >
+                  Update
+                </Link> */}
               </div>
             </Link>
           ))}

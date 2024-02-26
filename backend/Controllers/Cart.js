@@ -2,9 +2,26 @@ const db = require("../Database/database");
 
 // Create a cart
 const createCart = async (req, res) => {
-  const { userId, productId, quantity } = req.body;
-  const sql = "INSERT INTO cart (userId, productId, quantity) VALUES (?, ?, ?)";
-  const values = [userId, productId, quantity];
+  const {
+    itemId,
+    itemName,
+    itemPrice,
+    itemImage,
+    itemDescription,
+    quantity,
+    totalPrice,
+  } = req.body;
+  const sql =
+    "INSERT INTO cart (itemId, itemName, itemPrice, itemImage, itemDescription, quantity, totalPrice) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const values = [
+    itemId,
+    itemName,
+    itemPrice,
+    itemImage,
+    itemDescription,
+    quantity,
+    totalPrice,
+  ];
 
   try {
     await db.query(sql, values);
@@ -46,10 +63,27 @@ const getCart = async (req, res) => {
 // Update a cart
 const updateCart = async (req, res) => {
   const { id } = req.params;
-  const { userId, productId, quantity } = req.body;
+  const {
+    itemId,
+    itemName,
+    itemPrice,
+    itemImage,
+    itemDescription,
+    quantity,
+    totalPrice,
+  } = req.body;
   const sql =
-    "UPDATE cart SET userId = ?, productId = ?, quantity = ? WHERE id = ?";
-  const values = [userId, productId, quantity, id];
+    "UPDATE cart SET itemId = ?, itemName = ?, itemPrice = ?, itemImage = ?, itemDescription = ?, quantity = ?, totalPrice = ? WHERE id = ?";
+  const values = [
+    itemId,
+    itemName,
+    itemPrice,
+    itemImage,
+    itemDescription,
+    quantity,
+    totalPrice,
+    id,
+  ];
 
   try {
     await db.query(sql, values);
@@ -59,6 +93,7 @@ const updateCart = async (req, res) => {
     res.status(500).json({ error: "Error updating cart" });
   }
 };
+
 
 // Delete a cart
 const deleteCart = async (req, res) => {

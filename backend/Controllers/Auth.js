@@ -88,7 +88,7 @@ const loginUser = async (db, req, res) => {
     }
 
     // Proceed with login
-    const userId = userData[0].id;
+    const userId = userData[0].userId;
     const token = uuid.v4();
     await db.query("INSERT INTO sessions (userId, token) VALUES (?, ?)", [
       userId,
