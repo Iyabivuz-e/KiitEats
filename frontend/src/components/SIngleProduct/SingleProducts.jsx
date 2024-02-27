@@ -7,11 +7,8 @@ const SingleProducts = () => {
   const { id } = useParams();
   const [food, setFood] = useState();
   const [loading, setLoading] = useState(true);
-  const { addToCart, counter } = useContext(myContext);
-
-  const handleCounts = () => {
-    console.log("handleCounts");
-  };
+  const { addToCart, counter, handleCounterUp, handleCounterDown } =
+    useContext(myContext);
 
   useEffect(() => {
     // Fetch food details based on id
@@ -47,20 +44,20 @@ const SingleProducts = () => {
         />
       </div>
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-start gap-4">
-        <h1 className="text-2xl font-bold mb-4">{food.prodName}</h1>
+        <h1 className="text-2xl font-bold mb-3 mt-2">{food.prodName}</h1>
         <p>{food.prodDescription}</p>
         <p>&#8377;{food.prodPrice}</p>
         <div className="flex items-center gap-2">
           <p className="">Quantity: {counter}</p>
           <button
             className="bg-transparent border-2 border-blue-600 rounded-md px-2 py-1"
-            onClick={handleCounts}
+            onClick={handleCounterUp}
           >
             +
           </button>
           <button
             className="bg-transparent border-2 border-orange-600 rounded-md px-2 py-1"
-            onClick={handleCounts}
+            onClick={handleCounterDown}
           >
             -
           </button>
@@ -73,7 +70,7 @@ const SingleProducts = () => {
             Buy Now
           </Link>
           <button
-            onClick={() => addToCart(food)}
+            onClick={() => addToCart(food, counter)}
             className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
           >
             Add To Cart

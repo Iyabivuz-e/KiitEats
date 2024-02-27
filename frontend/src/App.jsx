@@ -10,7 +10,8 @@ import SingleProducts from "./components/SIngleProduct/SingleProducts";
 import Admin from "./components/Admin/Admin";
 import Cart from "./components/cart/Cart";
 // import UpdateProduct from "./components/Admin/UpdateProduct";
-function App() {
+
+  function App() {
 
   return (
     <div className="h-full">

@@ -6,7 +6,7 @@ import Loader from "../../utilities/Loader";
 
 const Product = () => {
   const { campusAddress } = useParams();
-  const { products, fetchProducts, addToCart } = useContext(myContext);
+  const { products, fetchProducts, addToCart, counter } = useContext(myContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Product = () => {
         alt="image slider"
       />
       <div className="w-full h-full absolute top-0 flex flex-col justify-center items-center bg-[rgb(0,0,0,0.7)] px-20">
-        <h1 className="mb-4 text-orange-600 text-5xl text-center w-full">
+        <h1 className="mb-4 text-orange-600 sm:text-5xl text-center w-full text-4xl">
           Foods available at {campusAddress}
         </h1>
       </div>
@@ -40,7 +40,7 @@ const Product = () => {
           No Food is found at {campusAddress}
         </h1>
       ) : (
-        <ul className="mt-5 px-5 grid grid-cols-3 gap-4 pb-3">
+        <ul className="mt-5 px-5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 pb-3">
           {products.map((product) => (
             <Link
               to={`/foods/${product.id}`}
@@ -73,10 +73,10 @@ const Product = () => {
                   Buy Now
                 </Link>
                 <Link
-                  onClick={() => addToCart(product)}
+                  to={`/foods/${product.id}`}
                   className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
                 >
-                  Add To Cart
+                  View More
                 </Link>
                 {/* <Link
                   to={`/admin/${product.id}`}

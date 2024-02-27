@@ -4,22 +4,22 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const Hero = () => {
   return (
-    <div className="w-full h-[350px] relative">
+    <div className="relative">
       <img
-        className="w-full h-full object-cover"
+        className="w-full h-[350px] object-cover"
         src={three}
         alt="image slider"
       />
-      <div className="w-full h-full absolute top-0 flex flex-col justify-center items-center bg-[rgb(0,0,0,0.6)] px-20">
-        <h1 className="mb-4 text-orange-600 text-2xl text-center w-full">
+      <div className="absolute inset-0 flex flex-col justify-center items-center bg-[rgba(0,0,0,0.6)] px-6 md:px-20">
+        <h1 className="mb-4 text-orange-600 text-2xl text-center max-w-lg">
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </h1>
-        <div className="w-[500px] px-[10px] py-0 flex items-center rounded-3xl bg-[rgb(203,213,225)]">
+        <div className="w-full max-w-md px-2 py-1 flex items-center rounded-full bg-[rgb(203,213,225)]">
           <SearchIcon className="text-sm text-gray-600" />
           <input
             type="text"
             name="search"
-            className="p-3 w-[95%] outline-none bg-transparent text-sm"
+            className="p-3 flex-grow outline-none bg-transparent text-sm"
             placeholder="Enter your campus name"
           />
         </div>

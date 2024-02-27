@@ -5,6 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const Navbar = () => {
   const { isLoggedIn, logout, carts } = useContext(myContext);
+  // console.log(carts)
   const [showLinks, setShowLinks] = useState(false);
 
   const handleLogout = () => {
