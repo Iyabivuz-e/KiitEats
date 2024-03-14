@@ -4,14 +4,13 @@ import { myContext } from "../../../context/AppContext";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const Navbar = () => {
-  const { isLoggedIn, logout, carts } = useContext(myContext);
-  // console.log(carts)
+  const { isLoggedIn, logout, cartLength } = useContext(myContext);
+  // console.log()
   const [showLinks, setShowLinks] = useState(false);
 
   const handleLogout = () => {
     logout();
   };
-
 
   return (
     <div className="p-4 sticky top-0 z-[999] bg-[rgb(203,213,225)] sm:flex sm:justify-between sm:items-center sm:px-6 lg:px-8">
@@ -47,36 +46,38 @@ const Navbar = () => {
 
       <div className={`sm:flex sm:items-center ${showLinks ? "" : "hidden"}`}>
         <ul className="flex flex-col sm:flex-row gap-5">
-          <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
-            <Link to="/">Home</Link>
-          </li>
           {isLoggedIn && (
             <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
-              <Link>Menu</Link>
+              <Link to="/menu">Menu</Link>
             </li>
           )}
           <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
-            <Link>Food Courts</Link>
+            <Link to="food_courts">Food Courts</Link>
           </li>
           <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
             <Link to="/admin">Admin</Link>
           </li>
           {isLoggedIn && (
-            <li className=" flex justify-center items-center gap-1 text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
+            <li className=" flex items-center gap-1 text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
               <Link to="/cart">Cart</Link>
 
               <div className="flex relative">
                 <ShoppingCartIcon />
                 <div className="flex absolute -top-3 -right-1 text-sm cursor-pointer">
-                  <p className="text-orange-600">{carts.length}</p>
+                  <p className="text-orange-600">{cartLength}</p>
                 </div>
               </div>
             </li>
           )}
           {isLoggedIn ? (
-            <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
-              <Link onClick={handleLogout}>Logout</Link>
-            </li>
+            <>
+              <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
+                <Link to="/orders">Orders</Link>
+              </li>
+              <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
+                <Link onClick={handleLogout}>Logout</Link>
+              </li>
+            </>
           ) : (
             <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
               <Link to="/login">Login/Register</Link>

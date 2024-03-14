@@ -29,6 +29,8 @@ const LoginForm = () => {
         alert(responseData["message"]); // parse response data
       } else {
         alert(responseData["message"]);
+        localStorage.setItem("userId", responseData.userId);
+        localStorage.setItem("token", responseData.token);
         navigate("/"); // navigate
         login();
       }

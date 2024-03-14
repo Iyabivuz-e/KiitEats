@@ -1,11 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { campuses } from "../../../FoodCourts";
-// import { myContext } from "../../../context/AppContext"
 
 const FoodCourts = () => {
-  // const { products } = useContext(myContext);
-
   //** Handle load more and load less buttons*** */
   const initialPreview = 6;
   const [previewCampus, setPreviewCampus] = useState(initialPreview);
@@ -26,7 +23,7 @@ const FoodCourts = () => {
         Select A Food Court
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-5 w-full mt-3 px-5 pb-3">
-        {campuses.slice(0, previewCampus).map((campus) => (
+        {campuses?.slice(0, previewCampus).map((campus) => (
           <Link
             to={`/menu/${campus.campusNumber}`}
             key={campus.id}

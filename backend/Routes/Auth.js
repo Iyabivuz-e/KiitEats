@@ -1,17 +1,18 @@
-const router = require('express').Router()
-const db = require("../Database/database");
+// authRoute.js
+const express = require("express");
+const router = express.Router();
+const { registerUser, loginUser, logOutUser } = require("../Controllers/Auth");
 
-// Import the controller functions
-const { registerUser, loginUser } = require('../Controllers/Auth');
-
-router.post("/register", async (req, res, next) => {
-  await registerUser(db, req, res);
+router.post("/register", async (req, res) => {
+  await registerUser(req, res);
 });
 
-router.post("/login", async (req, res, next) => {
-  await loginUser(db, req, res);
+router.post("/login", async (req, res) => {
+  await loginUser(req, res);
 });
 
+router.get("/logout", async (req, res) => {
+  await logOutUser(req, res);
+});
 
-// Export the router
 module.exports = router;

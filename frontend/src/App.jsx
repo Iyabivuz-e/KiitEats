@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Login from "./components/Login/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -9,9 +9,17 @@ import ContextProvider from "./context/AppContext";
 import SingleProducts from "./components/SIngleProduct/SingleProducts";
 import Admin from "./components/Admin/Admin";
 import Cart from "./components/cart/Cart";
-// import UpdateProduct from "./components/Admin/UpdateProduct";
+import { useParams } from "react-router-dom";
+import Footer from "./components/Home/Footer/Footer";
+import Menu from "./components/Menu/Menu";
+import FCourts from "./components/Home/FCourts/FCourts";
 
-  function App() {
+function App() {
+  // Adding items to the cart
+  const [counter, setCounter] = useState(1);
+  const { prodId } = useParams();
+  const [food, setFood] = useState();
+  const [loading, setLoading] = useState(true);
 
   return (
     <div className="h-full">
@@ -22,11 +30,28 @@ import Cart from "./components/cart/Cart";
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/menu/:campusAddress" element={<Product />} />
-            <Route path="/foods/:id" element={<SingleProducts />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route
+              path="/foods/:id"
+              element={
+                <SingleProducts
+                  counter={counter}
+                  loading={loading}
+                  setLoading={setLoading}
+                  prodId={prodId}
+                  food={food}
+                  setFood={setFood}
+                />
+              }
+            />
             <Route path="/admin" element={<Admin />} />
             <Route path="/cart" element={<Cart />} />
-            {/* <Route path="/admin/:id" element={<UpdateProduct />} /> */}
+            <Route
+              path="/food_courts"
+              element={<FCourts loading={loading} setLoading={setLoading} />}
+            />
           </Routes>
+          {/* <Footer /> */}
         </BrowserRouter>
       </ContextProvider>
     </div>

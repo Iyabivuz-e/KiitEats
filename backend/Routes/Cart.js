@@ -1,23 +1,24 @@
 const router = require("express").Router();
+const { verifyToken } = require("../Middleware/JWT");
 const {
- createCart,
-  getAllCarts,
-  getCart,
+  getUserCart,
+  addToCart,
   updateCart,
-  deleteCart,
-} = require('../Controllers/Cart');
+  removeFromCart,
+  // getCart,
+} = require("../Controllers/Cart");
 
 // Get All the cart items
-router.get("/", getAllCarts);
+router.get("/",verifyToken, getUserCart);
 
 // Get a single cart Item
-router.get("/:id", getCart);
+// router.get("/:id", getCart);
 
 // Add to cart
-router.post("/", createCart);
+router.post("/",verifyToken, addToCart);
 
 // Delete the cart product
-router.delete("/:id", deleteCart);
+router.delete("/:id", removeFromCart);
 
 // Update the cart product
 router.put("/:id", updateCart);

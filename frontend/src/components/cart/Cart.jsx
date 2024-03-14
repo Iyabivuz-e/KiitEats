@@ -6,25 +6,24 @@ import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { carts, setCarts, handleDelete } = useContext(myContext);
+  const { fetchCart, cart, setCart } = useContext(myContext);
 
-  // Fetch cart data from the backend
+  // ***********FETCHING THE CART*****************
   useEffect(() => {
-    const fetchCarts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/cart");
-        setCarts(response.data);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
+        await fetchCart();
+        setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching cart data:", error);
+        console.error("Error fetching the cart", error);
+        setIsLoading(false);
       }
     };
-
-    fetchCarts();
+    fetchData();
   }, []);
 
+
+  // ***********RENDERING THE CART*****************
   if (isLoading) {
     return <Loader />;
   }
@@ -34,40 +33,43 @@ const Cart = () => {
       <h1 className="text-3xl font-semibold mb-6 text-center mt-7 text-blue-600">
         My Cart
       </h1>
-      {carts.length === 0 ? (
+      {cart.length === 0 ? (
         <p className="text-center">No items in the cart.</p>
       ) : (
         <ul className="flex flex-col items-center justify-center p-5">
-          {carts.map((cart) => (
+          {cart.map((myCart) => (
             <li
-              key={cart.id}
+              key={myCart._id}
               className="m-auto border-b py-4 w-full md:w-[90%] flex flex-col md:flex-row items-center md:items-start"
             >
               <div className="w-full md:w-[50%] md:mr-6">
                 <img
-                  src={cart.itemImage}
+                  src={myCart.productId.prodImage}
                   alt="Item Image"
                   className="w-full h-auto md:h-[250px] object-cover"
                 />
               </div>
               <div className="w-full mt-4 md:w-[50%] md:mt-0">
                 <p className="text-lg text-blue-600 font-semibold">
-                  {cart.itemName}
+                  {myCart.productId.prodName}
                 </p>
                 <p className="text-lg mt-2 text-gray-600">
-                  &#8377;{cart.itemPrice}
+                  &#8377;{myCart.productId.prodPrice}
                 </p>
                 <p className="text-sm mt-2 text-gray-700">
-                  {cart.itemDescription}
+                  {myCart.productId.prodDescription}
                 </p>
                 <p className="text-sm mt-2 text-gray-700">
-                  Quantity: {cart.quantity}
+                  Location: {myCart.productId.prodAddress}
+                </p>
+                <p className="text-sm mt-2 text-gray-700">
+                  Quantity: {myCart.quantity}
                 </p>
                 <p className="text-lg mt-2 text-gray-700">
-                  Total: &#8377;{cart.totalPrice}
+                  Total: &#8377;{myCart.totalPrice}
                 </p>
                 <button
-                  onClick={() => handleDelete(cart.id)}
+                  onClick={() => fetchCart(myCart._id)}
                   className="bg-red-500 text-white px-3 py-1 mt-2 rounded hover:bg-red-600"
                 >
                   Delete

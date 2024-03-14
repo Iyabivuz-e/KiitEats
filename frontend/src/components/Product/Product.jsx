@@ -6,18 +6,21 @@ import Loader from "../../utilities/Loader";
 
 const Product = () => {
   const { campusAddress } = useParams();
-  const { products, fetchProducts, addToCart, counter } = useContext(myContext);
+  const { products, fetchProducts } = useContext(myContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      // setLoading(true);
       await fetchProducts(campusAddress);
       setTimeout(() => {
         setLoading(false);
-      }, 1000); // 
+      }, 1000); //
     };
-    fetchData();
-  }, [campusAddress, fetchProducts]);
+    if (campusAddress) {
+      fetchData();
+    }
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -43,9 +46,9 @@ const Product = () => {
         <ul className="mt-5 px-5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 pb-3">
           {products.map((product) => (
             <Link
-              to={`/foods/${product.id}`}
+              to={`/foods/${product._id}`}
               className="rounded-lg shadow "
-              key={product.id}
+              key={product._id}
             >
               <div className="h-[230px]">
                 <img
@@ -73,17 +76,11 @@ const Product = () => {
                   Buy Now
                 </Link>
                 <Link
-                  to={`/foods/${product.id}`}
+                  to={`/foods/${product._id}`}
                   className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
                 >
                   View More
                 </Link>
-                {/* <Link
-                  to={`/admin/${product.id}`}
-                  className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
-                >
-                  Update
-                </Link> */}
               </div>
             </Link>
           ))}

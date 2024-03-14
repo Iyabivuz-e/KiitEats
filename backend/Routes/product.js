@@ -6,9 +6,7 @@ const {
   getSingleProduct,
   deleteProduct,
   updateProduct,
-  upload,
 } = require("../Controllers/products");
-
 
 // Get All the product
 router.get("/", getAllProducts);
@@ -17,7 +15,7 @@ router.get("/", getAllProducts);
 router.get("/:id", getSingleProduct);
 
 // Add a product
-router.post("/",upload, addProduct);
+router.post("/", addProduct);
 
 // Delete the product
 router.delete("/:id", deleteProduct);

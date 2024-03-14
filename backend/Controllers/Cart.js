@@ -1,117 +1,95 @@
-const db = require("../Database/database");
+// const { Product, Cart } = require("../Models");
+const Product = require("../Models/Product");
+const Cart = require("../Models/Cart");
+// const Session = require("../Models/Sessions"); // Import Session model
 
-// Create a cart
-const createCart = async (req, res) => {
-  const {
-    itemId,
-    itemName,
-    itemPrice,
-    itemImage,
-    itemDescription,
-    quantity,
-    totalPrice,
-  } = req.body;
-  const sql =
-    "INSERT INTO cart (itemId, itemName, itemPrice, itemImage, itemDescription, quantity, totalPrice) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  const values = [
-    itemId,
-    itemName,
-    itemPrice,
-    itemImage,
-    itemDescription,
-    quantity,
-    totalPrice,
-  ];
-
+// Function to add a product to the cart with validations and error handling
+const addToCart = async (req, res) => {
   try {
-    await db.query(sql, values);
-    res.status(201).json({ message: "Cart created successfully" });
-  } catch (error) {
-    console.error("Error creating cart:", error);
-    res.status(500).json({ error: "Error creating cart" });
-  }
-};
+    const { productId, quantity } = req.body;
 
-// Get all carts
-const getAllCarts = async (req, res) => {
-  try {
-    const [carts] = await db.query("SELECT * FROM cart");
-    res.status(200).json(carts);
-  } catch (error) {
-    console.error("Error getting all carts:", error);
-    res.status(500).json({ error: "Error getting all carts" });
-  }
-};
+    // Fetch the product details from the database
+    const product = await Product.findById(productId);
 
-// Get a cart by ID
-const getCart = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const [cart] = await db.query("SELECT * FROM cart WHERE id = ?", [id]);
-    if (cart.length === 0) {
-      res.status(404).json({ error: "Cart not found" });
-    } else {
-      res.status(200).json(cart[0]);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
+
+    // console.log(req.user.userId)
+    // Add new item to user's cart
+    const cartItem = new Cart({
+      userId: req.user.userId,
+      productId,
+      quantity,
+      productDetails: product.toObject(),
+    })
+
+    await cartItem.save();
+    res
+      .status(200)
+      .json({ success: true, message: "Item added to cart", cartItem });
   } catch (error) {
-    console.error("Error getting cart:", error);
-    res.status(500).json({ error: "Error getting cart" });
+    console.error("Error adding item to cart:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
-// Update a cart
-const updateCart = async (req, res) => {
-  const { id } = req.params;
-  const {
-    itemId,
-    itemName,
-    itemPrice,
-    itemImage,
-    itemDescription,
-    quantity,
-    totalPrice,
-  } = req.body;
-  const sql =
-    "UPDATE cart SET itemId = ?, itemName = ?, itemPrice = ?, itemImage = ?, itemDescription = ?, quantity = ?, totalPrice = ? WHERE id = ?";
-  const values = [
-    itemId,
-    itemName,
-    itemPrice,
-    itemImage,
-    itemDescription,
-    quantity,
-    totalPrice,
-    id,
-  ];
-
+// Function to retrieve the current user's cart
+const getUserCart = async (req, res) => {
   try {
-    await db.query(sql, values);
-    res.status(200).json({ message: "Cart updated successfully" });
+    // Retrieve userId from the authenticated user session
+    const userId = req.user.userId;
+
+    // Retrieve user's cart using the userId
+    const userCart = await Cart.find({ userId }).populate("productId");
+    const cartLength = userCart.length
+    // console.log(cartLength)
+
+    res.status(200).json({ success: true, cart: userCart,cartLength});
+  } catch (error) {
+    console.error("Error fetching user's cart:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+// Function to delete a product from the cart
+const removeFromCart = async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+
+    // Remove product from user's cart
+    await Cart.findOneAndDelete({ userId, productId });
+
+    res
+      .status(200)
+      .json({ success: true, message: "Product removed from cart" });
+  } catch (error) {
+    console.error("Error removing product from cart:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+// Function to update the quantity of a product in the cart
+const updateCart = async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+    const { quantity } = req.body;
+
+    // Update product quantity in user's cart
+    await Cart.findOneAndUpdate(
+      { userId, productId },
+      { quantity },
+      { new: true }
+    );
+
+    res.status(200).json({ success: true, message: "Cart updated" });
   } catch (error) {
     console.error("Error updating cart:", error);
-    res.status(500).json({ error: "Error updating cart" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
-
-// Delete a cart
-const deleteCart = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    await db.query("DELETE FROM cart WHERE id = ?", [id]);
-    res.status(200).json({ message: "Cart deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting cart:", error);
-    res.status(500).json({ error: "Error deleting cart" });
-  }
-};
-
-module.exports = {
-  createCart,
-  getAllCarts,
-  getCart,
-  updateCart,
-  deleteCart,
-};
+module.exports = { addToCart, getUserCart, removeFromCart, updateCart };

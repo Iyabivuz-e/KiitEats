@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
@@ -15,30 +15,30 @@ const Register = ({ registerSuccess }) => {
   const password = useRef({});
   password.current = watch("password", "");
 
-  const onsSubmit = async(data) => {
+  const onSubmit = async (data) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/user/register",
         data
       );
 
-       if (response.status === 200) {
-         alert(
-           "User registered successfully. Please check your email for verification"
-         );
-
-       } else {
-         alert("An error occurred. Please try again later.");
-       }
-      } catch (error) {
+      if (response.status === 200) {
+        alert(
+          "User registered successfully. Please check your email for verification"
+        );
+      } else {
+        alert("An error occurred. Please try again later.");
+      }
+    } catch (error) {
       console.log(error);
     }
     reset();
     registerSuccess();
   };
+
   return (
     <form
-      onSubmit={handleSubmit(onsSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex gap-3 flex-col w-[450px] "
     >
       <input
@@ -70,7 +70,7 @@ const Register = ({ registerSuccess }) => {
             message: "Please enter a valid email address",
           },
         })}
-        placeholder="Ennter your kiit mail id"
+        placeholder="Enter your email"
       />
       {errors.email && (
         <small className="-mt-3 text-red-600 error-message-on">
@@ -98,17 +98,17 @@ const Register = ({ registerSuccess }) => {
       <input
         className="p-3 outline-none text-sm rounded-sm "
         type="password"
-        name="repeat_password"
-        {...register("repeat_password", {
+        name="repeatPassword"
+        {...register("repeatPassword", {
           required: "Repeat password is required",
           validate: (value) =>
-            value === password.current || "The password do not match",
+            value === password.current || "The passwords do not match",
         })}
         placeholder="Repeat your password"
       />
-      {errors.repeat_password && (
+      {errors.repeatPassword && (
         <small className="-mt-3 text-red-600 error-message-on">
-          {errors.repeat_password.message}
+          {errors.repeatPassword.message}
         </small>
       )}
       <button className="login-btn bg-blue-600 text-white p-1 text-lg rounded mt-2">

@@ -1,28 +1,13 @@
-// ***********CREATE PRODUCT TABLE**********
-const createProductTable = async (db) => {
-  try {
-    // Check if the product table already exists
-    const [existingTables] = await db.execute("SHOW TABLES LIKE 'product'");
-    if (existingTables.length > 0) {
-      console.log("Product table already exists");
-      return;
-    }
+const mongoose = require("mongoose");
 
-    const q = `
-      CREATE TABLE product (
-        id INT AUTO_INCREMENT PRIMARY KEY, 
-        prodName VARCHAR(45) NOT NULL,
-        prodImage VARCHAR(100) NOT NULL,
-        prodAddress VARCHAR(45) NOT NULL,
-        prodDescription VARCHAR(255) NOT NULL,
-        prodPrice INT NOT NULL
-      )`;
+const productSchema = new mongoose.Schema({
+  prodName: { type: String, required: true },
+  prodImage: { type: String, required: true },
+  prodAddress: { type: String, required: true },
+  prodDescription: { type: String, required: true },
+  prodPrice: { type: Number, required: true },
+});
 
-    await db.execute(q);
-    console.log("Product table is created");
-  } catch (err) {
-    console.error(err);
-  }
-};
+const Product = mongoose.model("Product", productSchema);
 
-module.exports = createProductTable;
+module.exports = Product;

@@ -1,43 +1,16 @@
-const db = require("../Database/database");
-const multer = require("multer");
-const path = require("path");
 
-// *******HANDLING THE FILES********
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "/assets/"));
-  },
-  filename: (req, file, cb) => {
-    const extension = path.extname(file.originalname);
-    cb(null, Date.now() + extension); // Appending timestamp to avoid filename conflicts
-  },
-});
+const Product = require("../Models/Product");
 
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-      return cb(new Error("Only image files are allowed"));
-    }
-    cb(null, true);
-  },
-  limits: {
-    fileSize: 1024 * 1024 * 5, // 5MB file size limit
-  },
-}).single("prodImage");
-
-// ***********GET ALL PRODUCTS**********
+// Get all products
 const getAllProducts = async (req, res) => {
   try {
-    await db.query("USE KiitEats");
-
-    let query = "SELECT * FROM product";
+    let query = {};
 
     if (req.query.campusAddress) {
-      query += " WHERE prodAddress = ?";
+      query.prodAddress = req.query.campusAddress;
     }
 
-    const [products] = await db.query(query, [req.query.campusAddress]);
+    const products = await Product.find(query);
 
     res.status(200).json(products);
   } catch (error) {
@@ -46,7 +19,8 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// ***********GET A SINGLE PRODUCT**********
+
+// Get a single product
 const getSingleProduct = async (req, res) => {
   try {
     const prodId = req.params.id;
@@ -55,58 +29,68 @@ const getSingleProduct = async (req, res) => {
       return res.status(400).json({ message: "Product ID is required" });
     }
 
-    const [product] = await db.query("SELECT * FROM product WHERE id = ?", [
-      prodId,
-    ]);
+    const product = await Product.findById(prodId);
 
-    if (product.length === 0) {
+    if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.status(200).json(product[0]);
+    res.status(200).json(product);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// ***********ADD A PRODUCT**********
+
+// Add a product
 const addProduct = async (req, res) => {
   try {
-    // Access uploaded file information from req.file
-    const prodImage = path.join("/assets", req.file.filename);
-
-    // Validate that all required fields are provided
-    const { prodName, prodAddress, prodDescription, prodPrice } = req.body;
-    if (!prodName || !prodAddress || !prodDescription || !prodPrice) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all product details" });
+    const prodName = req.body.prodName;
+    const prodAddress = req.body.prodAddress;
+    const prodDescription = req.body.prodDescription;
+    const prodPrice = req.body.prodPrice;
+    const prodImage = req.body.prodImage;
+    // Check if all required fields are provided
+    if (!prodName || !prodAddress || !prodDescription || !prodPrice || !prodImage) {
+      return res.status(400).json({ message: "Please provide all product details" });
     }
 
-    // Proceed with the database query using prodImage
-    const [result] = await db.query(
-      "INSERT INTO product(prodName, prodImage, prodAddress, prodDescription, prodPrice) VALUES (?, ?, ?, ?, ?)",
-      [prodName, prodImage, prodAddress, prodDescription, prodPrice]
-    );
+    // Create a new Product instance
+    const newProduct = new Product({
+      prodName,
+      prodImage,
+      prodAddress,
+      prodDescription,
+      prodPrice,
+    });
 
-    res.status(200).json({ message: "A product has been added successfully" });
+    // Save the new product to the database
+    const savedProduct = await newProduct.save();
+
+    // Check if the product was successfully saved
+    if (!savedProduct) {
+      return res.status(500).json({ message: "Failed to save the product" });
+    }
+
+    res.status(201).json({ message: "A product has been added successfully", product: savedProduct });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// ***********DELETE A PRODUCT**********
+
+// Delete a product
 const deleteProduct = async (req, res) => {
   try {
     const prodId = req.params.id;
 
-    await db.query("USE KiitEats");
+    const result = await Product.findByIdAndDelete(prodId);
 
-    const [result] = await db.query("DELETE FROM product WHERE id = ?", [
-      prodId,
-    ]);
+    if (!result) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
@@ -115,7 +99,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// ***********UPDATE A PRODUCT**********
+// Update a product
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -129,13 +113,21 @@ const updateProduct = async (req, res) => {
     }
 
     // Update the product in the database
-    const sql = `
-      UPDATE product 
-      SET prodName = ?, prodAddress = ?, prodDescription = ?, prodPrice = ?
-      WHERE id = ?
-    `;
-    const values = [prodName, prodAddress, prodDescription, prodPrice, id];
-    await db.query(sql, values);
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        prodName,
+        prodAddress,
+        prodDescription,
+        prodPrice,
+      },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
     res.status(200).json({ message: "Product updated successfully" });
   } catch (error) {
     console.error(error);
@@ -149,5 +141,4 @@ module.exports = {
   addProduct,
   deleteProduct,
   updateProduct,
-  upload: upload,
 };

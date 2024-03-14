@@ -5,17 +5,32 @@ export const myContext = createContext();
 
 const ContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
+  const [menu, setMenu] = useState();
+  // const [counter, setCounter] = useState(1);
+  // const [carts, setCarts] = useState([]);
+
+  // ********************LOGIN/LOGOUT**********************
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
-  const [counter, setCounter] = useState(1);
-  const [carts, setCarts] = useState([]);
 
   useEffect(() => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(storedIsLoggedIn);
   }, [isLoggedIn]);
 
+  const login = () => {
+    setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true");
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("isLoggedIn");
+    
+  };
+
+  // ********************PRODUCTS**********************
   const fetchProducts = async (campusAddress) => {
     try {
       const response = await fetch(
@@ -32,66 +47,65 @@ const ContextProvider = ({ children }) => {
     }
   };
 
-  const login = () => {
-    setIsLoggedIn(true);
-    localStorage.setItem("isLoggedIn", "true");
+  // ********************CART**********************
+  // const [cart, setCart] = useState({});
+
+  const [cart, setCart] = useState([]);
+  const [cartLength, setCartLength] = useState(0)
+  // console.log(cart.length)
+
+  //*****Initial store */
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cartItems"));
+    if (storedCart) {
+      setCart(storedCart);
+      setCartLength(storedCart.length); // Update cart length
+    }
+  }, []);
+
+  const updateCartInLocalStorage = (updatedCart) => {
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem("isLoggedIn");
-  };
-
-  const addToCart = async (product, quantity) => {
-    const totalPrice = parseFloat(product.prodPrice * counter);
+  const fetchCart = async () => {
     try {
-      await axios.post("http://localhost:5000/api/cart", {
-        itemId: product.id,
-        itemName: product.prodName,
-        itemPrice: product.prodPrice,
-        totalPrice: totalPrice,
-        itemImage: product.prodImage,
-        itemDescription: product.prodDescription,
-        quantity: quantity,
+      const response = await axios.get("http://localhost:5000/api/cart", {
+        headers: {
+          token: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      alert("Item added to cart successfully!");
-      // Fetch updated cart data from the server
-      fetchCartData();
+      setCart(response.data.cart);
+      updateCartInLocalStorage(response.data.cart); // Update local storage with fetched cart items
+      setCartLength(response.data.cart.length); // Update cart length
     } catch (error) {
-      console.error("Error adding item to cart:", error);
-      alert("Failed to add item to cart. Please try again later.");
+      console.error("Error fetching cart:", error);
     }
   };
 
-  const handleDelete = async (id) => {
+
+  const addToCart = async (productId, quantity) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cart/${id}`);
-      alert("Item deleted from cart successfully!");
-      // Fetch updated cart data from the server
-      fetchCartData();
+      const response = await axios.post(
+        "http://localhost:5000/api/cart",
+        {
+          productId,
+          quantity,
+        },
+        {
+          headers: {
+            token: `Bearer ${localStorage.getItem("token")}`, // Send JWT token in the Authorization header
+          },
+        }
+      );
+      fetchCart(); // Refresh cart after adding product
+      alert("Product added to cart");
+      console.log("Product added to cart:", response.data);
     } catch (error) {
-      console.error("Error deleting item from cart:", error);
-      alert("Failed to delete item from cart. Please try again later.");
+      console.error("Error adding product to cart:", error);
     }
   };
 
-  const fetchCartData = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/cart");
-      setCarts(response.data);
-    } catch (error) {
-      console.error("Error fetching cart data:", error);
-    }
-  };
-
-  const handleCounterUp = () => {
-    setCounter(counter + 1);
-  };
-
-  const handleCounterDown = () => {
-    if (counter > 1) setCounter(counter - 1);
-  };
-
+  // ********************RETUN STATEMENT**********************
   return (
     <myContext.Provider
       value={{
@@ -100,13 +114,12 @@ const ContextProvider = ({ children }) => {
         isLoggedIn,
         login,
         logout,
+        setCart,
+        cart,
         addToCart,
-        counter,
-        carts,
-        setCarts,
-        handleDelete,
-        handleCounterUp,
-        handleCounterDown,
+        fetchCart,
+        cartLength,
+        setCartLength,
       }}
     >
       {children}
