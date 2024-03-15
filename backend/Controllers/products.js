@@ -1,7 +1,6 @@
-
 const Product = require("../Models/Product");
 
-// Get all products
+// ******************GET ALL PRODUCTS*********************
 const getAllProducts = async (req, res) => {
   try {
     let query = {};
@@ -19,8 +18,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-
-// Get a single product
+// ******************GET A SINGLE PRODUCTS*********************
 const getSingleProduct = async (req, res) => {
   try {
     const prodId = req.params.id;
@@ -42,46 +40,37 @@ const getSingleProduct = async (req, res) => {
   }
 };
 
-
-// Add a product
+// ******************ADD A PRODUCTS*********************
 const addProduct = async (req, res) => {
   try {
-    const prodName = req.body.prodName;
-    const prodAddress = req.body.prodAddress;
-    const prodDescription = req.body.prodDescription;
-    const prodPrice = req.body.prodPrice;
-    const prodImage = req.body.prodImage;
-    // Check if all required fields are provided
-    if (!prodName || !prodAddress || !prodDescription || !prodPrice || !prodImage) {
-      return res.status(400).json({ message: "Please provide all product details" });
-    }
-
-    // Create a new Product instance
+    const { prodName, prodAddress, prodDescription, prodPrice, prodImage } =
+      req.body;
     const newProduct = new Product({
       prodName,
-      prodImage,
       prodAddress,
       prodDescription,
       prodPrice,
+      prodImage,
+      quantity: 1,
+      totalPrice: 0,
     });
 
-    // Save the new product to the database
     const savedProduct = await newProduct.save();
 
-    // Check if the product was successfully saved
     if (!savedProduct) {
       return res.status(500).json({ message: "Failed to save the product" });
     }
 
-    res.status(201).json({ message: "A product has been added successfully", product: savedProduct });
+    res
+      .status(201)
+      .json({ message: "Product added successfully", product: savedProduct });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-
-// Delete a product
+// ******************DELETE A PRODUCTS*********************
 const deleteProduct = async (req, res) => {
   try {
     const prodId = req.params.id;
@@ -99,20 +88,18 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// Update a product
+// ******************UPDATE A PRODUCTS*********************
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const { prodName, prodAddress, prodDescription, prodPrice } = req.body;
 
-    // Validate that all required fields are provided
     if (!prodName || !prodAddress || !prodDescription || !prodPrice) {
       return res
         .status(400)
         .json({ message: "Please provide all product details" });
     }
 
-    // Update the product in the database
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       {

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { fetchCart, cart, setCart } = useContext(myContext);
+  const { fetchCart, cart, setCart, removeFromCart } = useContext(myContext);
 
   // ***********FETCHING THE CART*****************
   useEffect(() => {
@@ -69,7 +69,7 @@ const Cart = () => {
                   Total: &#8377;{myCart.totalPrice}
                 </p>
                 <button
-                  onClick={() => fetchCart(myCart._id)}
+                  onClick={() => removeFromCart(myCart._id)}
                   className="bg-red-500 text-white px-3 py-1 mt-2 rounded hover:bg-red-600"
                 >
                   Delete

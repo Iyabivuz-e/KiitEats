@@ -18,9 +18,9 @@ router.get("/",verifyToken, getUserCart);
 router.post("/",verifyToken, addToCart);
 
 // Delete the cart product
-router.delete("/:id", removeFromCart);
+router.delete("/:id",verifyToken, removeFromCart);
 
 // Update the cart product
-router.put("/:id", updateCart);
+router.put("/:id",verifyToken, updateCart);
 
 module.exports = router;
