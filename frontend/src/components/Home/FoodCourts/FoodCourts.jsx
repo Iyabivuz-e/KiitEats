@@ -20,7 +20,7 @@ const FoodCourts = () => {
   return (
     <div className="flex flex-col justify-center gap-1 mt-5 w-full">
       <h1 className="text-center text-orange-600 text-3xl font-semibold">
-        Select A Food Court
+        Select A Campus Food Court
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-5 w-full mt-3 px-5 pb-3">
         {campuses?.slice(0, previewCampus).map((campus) => (

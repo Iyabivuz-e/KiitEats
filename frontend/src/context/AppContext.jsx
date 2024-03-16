@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const myContext = createContext();
 
@@ -178,6 +179,34 @@ const ContextProvider = ({ children }) => {
   //     console.error("Error updating cart:", error);
   //   }
   // };
+
+  
+  // ********************SEARCH THE PRODUCTS**********************
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  
+  const handleSearch = async (campusAddress) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/products?campusAddress=${campusAddress}`
+      );
+      if(response.ok){
+        const data = await response.json()
+        setSearchResults(data)
+      }else{
+        console.error("Failed to fetch products");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+    const handleSearchSubmit = async () => {
+      if(!searchInput) return;
+      await handleSearch(searchInput);
+      setSearchInput("");
+    };
+
+
   // ********************RETUN STATEMENT**********************
   return (
     <myContext.Provider
@@ -198,6 +227,11 @@ const ContextProvider = ({ children }) => {
         // updateCartItem,
         decreaseQuantity,
         increaseQuantity,
+        handleSearch,
+        searchResults,
+        searchInput,
+        setSearchInput,
+        handleSearchSubmit,
       }}
     >
       {children}

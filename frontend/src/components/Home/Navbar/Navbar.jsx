@@ -13,7 +13,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="p-4 sticky top-0 z-[999] bg-[rgb(203,213,225)] sm:flex sm:justify-between sm:items-center sm:px-6 lg:px-8">
+    <div className="p-4 sticky top-0 z-[999] bg-[#d6e1e8] sm:flex sm:justify-between sm:items-center sm:px-6 lg:px-8">
       <div className="flex justify-between items-center px-4 py-4 sm:p-0">
         <div className="logo">
           <Link to="/">

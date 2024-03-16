@@ -17,7 +17,7 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     try {
       const response = await fetch("http://localhost:5000/api/user/login", {
-        method: "POST", // specify the HTTP method
+        method: "POST", 
         headers: {
           "Content-Type": "application/json", // specify the content type
         },
@@ -34,9 +34,6 @@ const LoginForm = () => {
         navigate("/"); // navigate
         login();
       }
-      console.log(responseData);
-
-      // Now you can handle the response data accordingly
     } catch (error) {
       console.log(error);
     }
@@ -46,7 +43,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex gap-3 flex-col w-[450px] "
+      className="px-4 flex gap-3 flex-col w-full "
     >
       <input
         className="p-3 outline-none text-sm rounded-sm"

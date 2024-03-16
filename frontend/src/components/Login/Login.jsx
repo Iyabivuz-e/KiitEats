@@ -21,13 +21,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col mt-4 items-center -z-10">
-      <h1 className="text-blue-600 font-semibold text-4xl">
+    <div className="w-full flex flex-col mt-4 justify-center items-center ">
+      <h1 className="text-blue-600 font-semibold text-4xl text-center mt-8 w-full">
         Welcome to Kiit<span className="text-orange-600">Eats</span>
       </h1>
 
-      <div className="max-w-xl mt-8">
-        <div className=" flex justify-around py-3">
+      <div className="w-full mt-8 flex flex-col m-auto sm:max-w-xl">
+        <div className=" flex flex-col justify-around gap-3 md:flex-row px-4 ">
           <button
             onClick={handleLoginClick}
             className={`font-medium bg-transparent text-black py-2 px-12 rounded-md border-2 border-blue-600 ${

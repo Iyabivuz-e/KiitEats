@@ -39,7 +39,7 @@ const Register = ({ registerSuccess }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex gap-3 flex-col w-[450px] "
+      className="px-4 flex gap-3 flex-col w-full "
     >
       <input
         className="p-3 outline-none text-sm rounded-sm"

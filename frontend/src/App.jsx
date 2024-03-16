@@ -13,14 +13,21 @@ import { useParams } from "react-router-dom";
 import Footer from "./components/Home/Footer/Footer";
 import Menu from "./components/Menu/Menu";
 import FCourts from "./components/Home/FCourts/FCourts";
+import Loader from "./utilities/Loader";
+import SearchFood from "./components/searchFood/SearchFood";
 
 function App() {
-  // Adding items to the cart
-  const [counter, setCounter] = useState(1);
-  const { prodId } = useParams();
-  const [food, setFood] = useState();
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="h-full">
       <ContextProvider>
@@ -31,17 +38,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/menu/:campusAddress" element={<Product />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/search/:campusAddress" element={<SearchFood />} />
             <Route
               path="/foods/:id"
               element={
-                <SingleProducts
-                  counter={counter}
-                  loading={loading}
-                  setLoading={setLoading}
-                  prodId={prodId}
-                  food={food}
-                  setFood={setFood}
-                />
+                <SingleProducts loading={loading} setLoading={setLoading} />
               }
             />
             <Route path="/admin" element={<Admin />} />
