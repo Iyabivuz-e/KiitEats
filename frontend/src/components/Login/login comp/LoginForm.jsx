@@ -56,7 +56,7 @@ const LoginForm = () => {
             message: "Please enter a valid email address",
           },
         })}
-        placeholder="Enter your kiit mail id"
+        placeholder="Enter your email"
       />
 
       {errors.email && (

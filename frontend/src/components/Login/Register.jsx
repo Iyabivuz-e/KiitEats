@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
@@ -10,6 +10,7 @@ const Register = ({ registerSuccess }) => {
     watch,
     reset,
   } = useForm();
+  // const [registered , setRegistered] = useState(false)
 
   // Confirm password validations.
   const password = useRef({});
@@ -26,6 +27,14 @@ const Register = ({ registerSuccess }) => {
         alert(
           "User registered successfully. Please check your email for verification"
         );
+        // return (
+        //   <div className="text-green-500">
+        //     <p>
+        //       User registered successfully. Please check your email for
+        //       verification
+        //     </p>
+        //   </div>
+        // );
       } else {
         alert("An error occurred. Please try again later.");
       }
