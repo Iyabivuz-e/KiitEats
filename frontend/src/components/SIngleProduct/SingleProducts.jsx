@@ -35,7 +35,7 @@ const SingleProducts = ({ loading, setLoading }) => {
             },
             body: JSON.stringify({
               source: stripePayment.id,
-              totalPrice: products.totalPrice * 1000, // Assuming products is properly set
+              totalPrice: products.totalPrice * 100, // Assuming products is properly set
             }),
           }
         );
@@ -132,7 +132,7 @@ const SingleProducts = ({ loading, setLoading }) => {
                 description={`${products.prodName} : Total Price: &#8377;${products.totalPrice}`}
                 stripeKey="pk_test_51OrxZNSD2wp2tswRa9uRElxaLNi9Z6og8VS2wmxHKKI6nI815NnXABIK6CrbhPfHx3lIwqX2J0nvqNaOa9nvst3B003j2uiwZd"
                 token={makePayment}
-                amount={products.totalPrice * 1000}
+                amount={products.totalPrice * 100}
                 shippingAddress
                 billingAddress
               >
