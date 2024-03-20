@@ -23,6 +23,13 @@ app.use(
   })
 );
 
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Content-Type", "Authorization"],
+};
 app.use(cors());
 
 // ******CALLING THE ROUTES***********
