@@ -60,6 +60,10 @@ app.use("/api/cart", cartRoute);
 app.use("/api/user", authRoute);
 app.use("/api/products", productsRoute);
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+})
+
 // ******STARTING THE SERVER***********
 const start = async () => {
   try {
