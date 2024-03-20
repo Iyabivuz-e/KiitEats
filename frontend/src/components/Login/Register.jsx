@@ -19,7 +19,7 @@ const Register = ({ registerSuccess }) => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/user/register",
+        "https://kiit-eats-backend.vercel.app/api/user/register",
         data
       );
 

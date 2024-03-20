@@ -27,7 +27,7 @@ const SingleProducts = ({ loading, setLoading }) => {
     const payment = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/stripe/payment`,
+          `https://kiit-eats-backend.vercel.app/api/stripe/payment`,
           {
             method: "POST",
             headers: {
@@ -62,7 +62,7 @@ const SingleProducts = ({ loading, setLoading }) => {
     const fetchFoodDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/products/${id}`
+          `https://kiit-eats-backend.vercel.app/api/products/${id}`
         );
         const data = await response.json();
         setProducts(data);

@@ -12,7 +12,9 @@ const Menu = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await axios.get(
+          "https://kiit-eats-backend.vercel.app/api/products"
+        );
         setMenus(response.data);
         setLoading(false);
       } catch (error) {

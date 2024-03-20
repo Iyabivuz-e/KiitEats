@@ -16,13 +16,16 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost:5000/api/user/login", {
-        method: "POST", 
-        headers: {
-          "Content-Type": "application/json", // specify the content type
-        },
-        body: JSON.stringify(data), // convert data to JSON string
-      });
+      const response = await fetch(
+        "https://kiit-eats-backend.vercel.app/api/user/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // specify the content type
+          },
+          body: JSON.stringify(data), // convert data to JSON string
+        }
+      );
       const responseData = await response.json();
       console.log(responseData);
       if (!response.ok) {
