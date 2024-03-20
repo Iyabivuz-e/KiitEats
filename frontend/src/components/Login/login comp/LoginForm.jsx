@@ -43,7 +43,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="px-4 flex gap-3 flex-col w-full "
+      className="px-4 flex gap-3 flex-col w-full pb-3"
     >
       <input
         className="p-3 outline-none text-sm rounded-sm"
