@@ -2,7 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const cors = require("cors");
-const MongoStore = require("connect-mongo")
+const MongoStore = require("connect-mongo");
 require("dotenv").config();
 const db = require("./Database/database");
 const multer = require("multer");
@@ -23,12 +23,7 @@ app.use(
   })
 );
 
-app.use(
-  cors({
-    origin: "https://kiiteats.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 // ******CALLING THE ROUTES***********
 const paymentsRoute = require("./Routes/Stripe");
@@ -67,7 +62,7 @@ app.use("/api/products", productsRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
-})
+});
 
 // ******STARTING THE SERVER***********
 const start = async () => {
