@@ -60,7 +60,7 @@ app.use("/api/cart", cartRoute);
 app.use("/api/user", authRoute);
 app.use("/api/products", productsRoute);
 
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
   res.send("Hello World!");
 });
 
