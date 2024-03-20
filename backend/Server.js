@@ -23,7 +23,12 @@ app.use(
   })
 );
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://kiiteats.vercel.app",
+    credentials: true,
+  })
+);
 
 // ******CALLING THE ROUTES***********
 const paymentsRoute = require("./Routes/Stripe");
