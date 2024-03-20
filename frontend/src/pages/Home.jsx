@@ -9,8 +9,7 @@ import { useContext } from "react";
 import SearchFood from "../components/searchFood/SearchFood";
 
 const Home = () => {
-  const { handleSearchSubmit, searchInput, searchResults } = useContext(myContext);
-  console.log(searchResults );
+  const { handleSearchSubmit} = useContext(myContext);
   return (
     <div>
       <Hero />
