@@ -32,7 +32,7 @@ const ContextProvider = ({ children }) => {
   const fetchProducts = async (campusAddress) => {
     try {
       const response = await fetch(
-        `https://kiit-eats-backend.vercel.app/api/products?campusAddress=${campusAddress}`
+        `http://localhost:5000/api/products?campusAddress=${campusAddress}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -64,7 +64,7 @@ const ContextProvider = ({ children }) => {
   // ***** Get all cart items in local storage
   const fetchCart = async () => {
     try {
-      const response = await axios.get("https://kiit-eats-backend.vercel.app/api/cart", {
+      const response = await axios.get("http://localhost:5000/api/cart", {
         headers: {
           token: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -125,7 +125,7 @@ const ContextProvider = ({ children }) => {
   const addToCart = async (productId, quantity) => {
     try {
       const response = await axios.post(
-        "https://kiit-eats-backend.vercel.app/api/cart",
+        "http://localhost:5000/api/cart",
         {
           productId,
           quantity,
@@ -146,7 +146,7 @@ const ContextProvider = ({ children }) => {
   // ***** Remove an item from the cart
   const removeFromCart = async (id) => {
     try {
-      await axios.delete(`https://kiit-eats-backend.vercel.app/api/cart/${id}`, {
+      await axios.delete(`http://localhost:5000/api/cart/${id}`, {
         headers: {
           token: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -165,7 +165,7 @@ const ContextProvider = ({ children }) => {
   // ***** Update an item from the cart
   // const updateCartItem = async (userId, productId, quantity) => {
   //   try {
-  //     await axios.put(`https://kiit-eats-backend.vercel.app/api/cart/${userId}/${productId}`, {
+  //     await axios.put(`http://localhost:5000/api/cart/${userId}/${productId}`, {
   //       quantity,
   //     });
   //     const updatedCart = cart.map((item) => {
@@ -188,7 +188,7 @@ const ContextProvider = ({ children }) => {
   const handleSearch = async (campusAddress) => {
     try {
       const response = await fetch(
-        `https://kiit-eats-backend.vercel.app/api/products?campusAddress=${campusAddress}`
+        `http://localhost:5000/api/products?campusAddress=${campusAddress}`
       );
       if(response.ok){
         const data = await response.json()
