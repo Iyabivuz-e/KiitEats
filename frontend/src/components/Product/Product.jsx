@@ -39,7 +39,7 @@ const Product = () => {
         </h1>
       </div>
       {products.length === 0 ? (
-        <h1 className="text-center mt-7 text-2xl ">
+        <h1 className="text-center mt-7 text-2xl px-4">
           No Food is found at {campusAddress}
         </h1>
       ) : (

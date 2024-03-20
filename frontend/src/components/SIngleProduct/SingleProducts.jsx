@@ -68,7 +68,7 @@ const SingleProducts = ({ loading, setLoading }) => {
         setProducts(data);
         setTimeout(() => {
           setLoading(false);
-        }, 1000);
+        }, 2000);
       } catch (error) {
         console.error("Error fetching food details:", error);
       }

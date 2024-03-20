@@ -5,31 +5,21 @@ import { myContext } from "../../context/AppContext";
 import Loader from "../../utilities/Loader";
 
 const SearchFood = () => {
-  const { campusAddress } = useParams();
-  const { searchResults } =
-    useContext(myContext);
+  // const { campusAddress } = useParams();
+  const { searchResults, handleSearchSubmit } = useContext(myContext);
   const [loading, setLoading] = useState(true);
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       // setLoading(true);
-//       await fetchProducts(campusAddress);
-//       setTimeout(() => {
-//         setLoading(false);
-//       }, 1000); //
-//     };
-//     if (campusAddress) {
-//       fetchData();
-//     }
-//   }, []);
+  useEffect(() => {
+      setLoading(false);
+  },[searchResults]);
 
   if (loading) {
     return <Loader />;
   }
 
   return (
-    <div className="w-full h-[350px] relative">
-      <img
+    <div className="w-full relative">
+      {/* <img
         className="w-full h-full object-cover"
         src={campusImage}
         alt="image slider"
@@ -38,11 +28,10 @@ const SearchFood = () => {
         <h1 className="mb-4 text-orange-600 sm:text-5xl text-center w-full text-4xl">
           Foods available at {campusAddress}
         </h1>
-      </div>
-      {searchResults.length === 0 ? (
-        <h1 className="text-center mt-7 text-2xl ">
-          No Food is found at {campusAddress}
-        </h1>
+      </div> */}
+      {handleSearchSubmit && searchResults && searchResults.length === 0 ? (
+        // <h1 className="text-center mt-7 text-2xl ">No food is found</h1>
+        null
       ) : (
         <ul className="mt-5 px-5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 pb-3">
           {searchResults.map((product) => (
