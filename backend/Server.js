@@ -30,7 +30,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
   exposedHeaders: ["Content-Type", "Authorization"],
 };
-app.use(cors());
+app.use(cors(corsOptions));
 
 // ******CALLING THE ROUTES***********
 const paymentsRoute = require("./Routes/Stripe");
