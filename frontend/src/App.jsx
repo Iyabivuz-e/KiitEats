@@ -45,7 +45,6 @@ function App() {
                 <SingleProducts loading={loading} setLoading={setLoading} />
               }
             />
-            <Route path="/admin" element={<Admin />} />
             <Route path="/cart" element={<Cart />} />
             <Route
               path="/food_courts"

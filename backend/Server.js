@@ -23,14 +23,14 @@ app.use(
   })
 );
 
-const corsOptions = {
-  origin: "*",
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  exposedHeaders: ["Content-Type", "Authorization"],
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: "*",
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   exposedHeaders: ["Content-Type", "Authorization"],
+// };
+app.use(cors());
 
 // ******CALLING THE ROUTES***********
 const paymentsRoute = require("./Routes/Stripe");
@@ -68,7 +68,7 @@ app.use("/api/user", authRoute);
 app.use("/api/products", productsRoute);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.json({"message": "Hello"});
 });
 
 // ******STARTING THE SERVER***********

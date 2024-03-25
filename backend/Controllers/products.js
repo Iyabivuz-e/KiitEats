@@ -52,7 +52,7 @@ const addProduct = async (req, res) => {
       prodPrice,
       prodImage,
       quantity: 1,
-      totalPrice: 0,
+      totalPrice: prodPrice,
     });
 
     const savedProduct = await newProduct.save();

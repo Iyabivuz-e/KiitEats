@@ -54,9 +54,6 @@ const Navbar = () => {
           <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
             <Link to="food_courts">Food Courts</Link>
           </li>
-          <li className="text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
-            <Link to="/admin">Admin</Link>
-          </li>
           {isLoggedIn && (
             <li className=" flex items-center gap-1 text-blue-700 hover:text-orange-600 transition-all duration-400 text-base">
               <Link to="/cart">Cart</Link>
