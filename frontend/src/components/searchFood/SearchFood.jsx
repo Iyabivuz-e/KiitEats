@@ -19,16 +19,6 @@ const SearchFood = () => {
 
   return (
     <div className="w-full relative">
-      {/* <img
-        className="w-full h-full object-cover"
-        src={campusImage}
-        alt="image slider"
-      />
-      <div className="w-full h-full absolute top-0 flex flex-col justify-center items-center bg-[rgb(0,0,0,0.7)] px-20">
-        <h1 className="mb-4 text-orange-600 sm:text-5xl text-center w-full text-4xl">
-          Foods available at {campusAddress}
-        </h1>
-      </div> */}
       {handleSearchSubmit && searchResults && searchResults.length === 0 ? (
         // <h1 className="text-center mt-7 text-2xl ">No food is found</h1>
         null

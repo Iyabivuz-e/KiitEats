@@ -7,7 +7,6 @@ import Navbar from "./components/Home/Navbar/Navbar";
 import Product from "./components/Product/Product";
 import ContextProvider from "./context/AppContext";
 import SingleProducts from "./components/SIngleProduct/SingleProducts";
-import Admin from "./components/Admin/Admin";
 import Cart from "./components/cart/Cart";
 import { useParams } from "react-router-dom";
 import Footer from "./components/Home/Footer/Footer";
@@ -51,8 +50,8 @@ function App() {
               element={<FCourts loading={loading} setLoading={setLoading} />}
             />
           </Routes>
-          {/* <Footer /> */}
         </BrowserRouter>
+          <Footer />
       </ContextProvider>
     </div>
   );
