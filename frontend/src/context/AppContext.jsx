@@ -207,6 +207,97 @@ const ContextProvider = ({ children }) => {
     };
 
 
+    //Stripe payment
+    const [stripePayment, setStripePayment] = useState();
+    const makePayment = (token) => {
+      setStripePayment(token);
+    };
+
+    useEffect(() => {
+      const payment = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/stripe/payment`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                source: stripePayment.id,
+                totalPrice: products.totalPrice * 100, // Assuming products is properly set
+              }),
+            }
+          );
+
+          if (response.ok) {
+            const result = await response.json();
+            alert("Payment successful");
+            console.log("RESPONSE:", result);
+          } else {
+            alert("Payment failed");
+            console.log("ERROR:", response.json());
+          }
+        } catch (error) {
+          alert("Payment failed");
+          console.error("ERROR:", error);
+        }
+      };
+      stripePayment && payment();
+    }, [stripePayment]);
+
+    // const makePayment = async (token) => {
+    //   try {
+    //     const response = await fetch(
+    //       "http://localhost:5000/api/stripe/payment",
+    //       {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //           tokenId: token.id,
+    //           totalPrice: products.totalPrice * 100,
+    //         }),
+    //       }
+    //     );
+
+    //     if (response.ok) {
+    //       const result = await response.json();
+    //       // Call createOrder API with the necessary order details
+    //       await createOrder({
+    //         products: products.map((product) => ({
+    //           product: product._id,
+    //           quantity: 1,
+    //         })),
+    //         totalAmount: products.totalPrice,
+    //         customerName: name, // Replace with actual customer name
+    //         customerEmail: email, // Replace with actual customer email
+    //         shippingAddress: address, // Replace with actual shipping address
+    //       });
+    //       alert("Payment successful");
+    //       console.log("RESPONSE:", result);
+    //     } else {
+    //       alert("Payment failed");
+    //       console.log("ERROR:", response.json());
+    //     }
+    //   } catch (error) {
+    //     alert("Payment failed");
+    //     console.error("ERROR:", error);
+    //   }
+    // };
+
+
+    // Logout
+    const myLogout = () => {
+      setIsLoggedIn(false);
+      localStorage.removeItem("isLoggedIn");
+    };
+
+
+    //HandleBuyNow for orders...
+    
+
   // ********************RETUN STATEMENT**********************
   return (
     <myContext.Provider
@@ -217,6 +308,7 @@ const ContextProvider = ({ children }) => {
         isLoggedIn,
         login,
         logout,
+        myLogout,
         setCart,
         cart,
         addToCart,
@@ -232,6 +324,10 @@ const ContextProvider = ({ children }) => {
         searchInput,
         setSearchInput,
         handleSearchSubmit,
+        stripePayment,
+        makePayment,
+        setStripePayment,
+        
       }}
     >
       {children}

@@ -4,12 +4,12 @@ import { myContext } from "../../../context/AppContext";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const Navbar = () => {
-  const { isLoggedIn, logout, cartLength } = useContext(myContext);
+  const { isLoggedIn, logout,myLogout, cartLength } = useContext(myContext);
   // console.log()
   const [showLinks, setShowLinks] = useState(false);
 
   const handleLogout = () => {
-    logout();
+    myLogout();
   };
 
   return (

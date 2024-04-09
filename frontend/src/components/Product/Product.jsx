@@ -3,10 +3,14 @@ import { Link, useParams } from "react-router-dom";
 import campusImage from "../../assets/two.jpg";
 import { myContext } from "../../context/AppContext";
 import Loader from "../../utilities/Loader";
+import StripeCheckout from "react-stripe-checkout";
+
 
 const Product = () => {
   const { campusAddress } = useParams();
-  const { products, fetchProducts } = useContext(myContext);
+  const { products, fetchProducts, makePayment, isLoggedIn } =
+    useContext(myContext);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -71,9 +75,38 @@ const Product = () => {
               <div className="p-3 flex justify-between gap-2">
                 <Link
                   to=""
-                  className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
+                  // className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
                 >
-                  Buy Now
+                  {!isLoggedIn ? (
+                    <>
+                      <Link
+                        to="/login"
+                        className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
+                      >
+                        Buy Now for &#8377;{product.totalPrice}
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <StripeCheckout
+                        redirectToCheckout
+                        name="KiitEats"
+                        description={` ${product.prodName} : Total Price: Rs.${product.totalPrice}`}
+                        stripeKey="pk_test_51OrxZNSD2wp2tswRa9uRElxaLNi9Z6og8VS2wmxHKKI6nI815NnXABIK6CrbhPfHx3lIwqX2J0nvqNaOa9nvst3B003j2uiwZd"
+                        token={makePayment}
+                        amount={product.totalPrice * 100}
+                        shippingAddress
+                        billingAddress
+                      >
+                        <button
+                          to=""
+                          className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
+                        >
+                          Buy Now for &#8377; {product.totalPrice}
+                        </button>
+                      </StripeCheckout>
+                    </>
+                  )}
                 </Link>
                 <Link
                   to={`/foods/${product._id}`}

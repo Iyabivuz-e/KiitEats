@@ -15,42 +15,66 @@ const stripePay = (req, res) => {
     (stripeErr, stripeRes) => {
       if (stripeErr) {
         res.status(500).json(stripeErr);
+        console.log(stripeErr)
       } else {
         res.status(200).json(stripeRes);
+        console.log(stripeRes)
       }
     }
   );
 };
 
-// const stripePay = async (req, res) => {
-//   const { product, token } = req.body;
-//   console.log("PRODUCT", product);
-//   console.log("PRODUCT", product.prodPrice);
-
-//   return stripe.customers.create({
-//     email: token.email,
-//     source: token.id
-//   }).then(customer => {
-//     stripe.paymentIntents.create({
-//       amount: product.prodPrice * 100,
-//       currency: "inr",
-//       customer: customer.id,
-//       receipt_email: token.email,
-//       description: `Purchased the ${product.prodName}`,
-//       shipping: {
-//         name: token.card.name,
-//         address: {
-//           country: token.card.address_country,
-//           city: token.card.address_city,
-//           postal_code: token.card.address_zip,
-//           line1: token.card.address_line1,
-//           phone: token.card.phone_number,
-//         }
-//       }
-//     }, { idempotencyKey: token.card.id})
-//   })
-//     .then(result => res.status(200).json(result))
-//     .catch(err => console.log(err));
-// }
 
 module.exports = stripePay;
+
+
+// const uuid = require("uuid");
+// const Order = require("../Models/Orders"); // Import the Order schema
+
+// const KEY = process.env.STRIPE_KEY;
+// const stripe = require("stripe")(KEY, {
+//   apiVersion: "2023-10-16",
+// });
+
+// const stripePay = (req, res) => {
+//   // Extract shipping address from the request body sent by the frontend
+//   const { tokenId, totalPrice, shippingAddress } = req.body;
+
+//   // Create a payment intent with Stripe
+//   stripe.paymentIntents.create(
+//     {
+//       source: tokenId,
+//       amount: totalPrice,
+//       currency: "inr",
+//     },
+//     async (stripeErr, stripeRes) => {
+//       if (stripeErr) {
+//         console.log(stripeErr);
+//         return res.status(500).json(stripeErr);
+//       } else {
+//         // Payment succeeded, save the order to the database
+//         try {
+//           const order = new Order({
+//             products: req.body.products, // Assuming products are sent from frontend
+//             totalAmount: totalPrice,
+//             customerName: req.body.customerName,
+//             customerEmail: req.body.customerEmail,
+//             shippingAddress: shippingAddress, // Save shipping address here
+//             user: req.body.userId, // Assuming you have userId available in the request
+//           });
+
+//           const savedOrder = await order.save();
+//           console.log("Order saved successfully:", savedOrder);
+//           return res
+//             .status(200)
+//             .json({ message: "Order saved successfully", order: savedOrder });
+//         } catch (error) {
+//           console.log("Error saving order:", error);
+//           return res.status(500).json({ error: "Error saving order" });
+//         }
+//       }
+//     }
+//   );
+// };
+
+// module.exports = stripePay;

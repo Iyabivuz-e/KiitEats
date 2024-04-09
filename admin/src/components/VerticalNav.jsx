@@ -12,17 +12,17 @@ const VerticalNav = () => {
           </Link>
         </li>
         <li className="mb-2">
-          <Link to="/products" className="text-gray-300 hover:text-white block">
+          <Link to="/" className="text-gray-300 hover:text-white block">
             Users
           </Link>
         </li>
         <li className="mb-2">
-          <Link to="/products" className="text-gray-300 hover:text-white block">
+          <Link to="/orders" className="text-gray-300 hover:text-white block">
             Orders
           </Link>
         </li>
         <li className="mb-2">
-          <Link to="/products" className="text-gray-300 hover:text-white block">
+          <Link to="/" className="text-gray-300 hover:text-white block">
             Settings
           </Link>
         </li>

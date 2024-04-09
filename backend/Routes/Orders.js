@@ -1,25 +1,24 @@
 const router = require("express").Router();
 const {
+  getAllOrders,
+  getOrderById,
   createOrder,
-  getAllOrder,
-  getOrder,
-  updateOrder,
-  deleteOrder,
+  updateOrderStatus,
 } = require("../Controllers/Orders");
 
 // Get All the cart items
-router.get("/", getAllOrder);
+router.get("/", getAllOrders);
 
 // Get a single cart Item
-router.get("/:id", getOrder);
+router.get("/:id", getOrderById);
 
 // Add to cart
 router.post("/", createOrder);
 
 // Delete the cart product
-router.delete("/:id", deleteOrder);
+// router.delete("/:id", deleteOrder);
 
 // Update the cart product
-router.put("/:id", updateOrder);
+router.put("/:id", updateOrderStatus);
 
 module.exports = router;

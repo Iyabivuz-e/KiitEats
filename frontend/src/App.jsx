@@ -51,7 +51,7 @@ function App() {
             />
           </Routes>
         </BrowserRouter>
-          <Footer />
+          {/* <Footer /> */}
       </ContextProvider>
     </div>
   );

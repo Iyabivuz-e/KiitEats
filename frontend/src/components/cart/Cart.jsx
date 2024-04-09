@@ -3,10 +3,11 @@ import axios from "axios";
 import Loader from "../../utilities/Loader";
 import { myContext } from "../../context/AppContext";
 import { Link } from "react-router-dom";
+import StripeCheckout from "react-stripe-checkout";
 
 const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { fetchCart, cart, setCart, removeFromCart } = useContext(myContext);
+  const { fetchCart, cart, setCart, removeFromCart, isLoggedIn, makePayment } = useContext(myContext);
 
   // ***********FETCHING THE CART*****************
   useEffect(() => {
@@ -74,11 +75,30 @@ const Cart = () => {
                 >
                   Delete
                 </button>
+
                 <Link
                   to=""
                   className="bg-blue-500 text-white px-3 py-1 mt-2 rounded ml-3"
                 >
-                  Buy Now
+                  <>
+                    <StripeCheckout
+                      redirectToCheckout
+                      name="KiitEats"
+                      description={` ${myCart.prodName} : Total Price: Rs.${myCart.totalPrice}`}
+                      stripeKey="pk_test_51OrxZNSD2wp2tswRa9uRElxaLNi9Z6og8VS2wmxHKKI6nI815NnXABIK6CrbhPfHx3lIwqX2J0nvqNaOa9nvst3B003j2uiwZd"
+                      token={makePayment}
+                      amount={myCart.totalPrice * 100}
+                      shippingAddress
+                      billingAddress
+                    >
+                      <button
+                        to=""
+                        // className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
+                      >
+                        Buy Now for &#8377; {myCart.totalPrice}
+                      </button>
+                    </StripeCheckout>
+                  </>
                 </Link>
               </div>
             </li>

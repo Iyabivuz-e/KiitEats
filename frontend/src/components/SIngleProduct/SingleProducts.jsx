@@ -14,47 +14,10 @@ const SingleProducts = ({ loading, setLoading }) => {
     decreaseQuantity,
     products,
     setProducts,
+    makePayment,
   } = useContext(myContext);
   const { id } = useParams();
 
-  // *****************STRIPE PAYMENT FUNCTION**********************
-  const [stripePayment, setStripePayment] = useState();
-  const makePayment = (token) => {
-    setStripePayment(token);
-  };
-
-  useEffect(() => {
-    const payment = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/stripe/payment`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              source: stripePayment.id,
-              totalPrice: products.totalPrice * 100, // Assuming products is properly set
-            }),
-          }
-        );
-
-        if (response.ok) {
-          const result = await response.json();
-          alert("Payment successful");
-          console.log("RESPONSE:", result);
-        } else {
-          alert("Payment failed");
-          console.log("ERROR:", response.json());
-        }
-      } catch (error) {
-        alert("Payment failed");
-        console.error("ERROR:", error);
-      }
-    };
-    stripePayment && payment();
-  }, [stripePayment]);
 
   //****************FETCH SINGLE PRODUCT BY THEIR ID********************
   useEffect(() => {
@@ -128,8 +91,9 @@ const SingleProducts = ({ loading, setLoading }) => {
           ) : (
             <>
               <StripeCheckout
+                redirectToCheckout
                 name="KiitEats"
-                description={`${products.prodName} : Total Price: &#8377;${products.totalPrice}`}
+                description={` ${products.prodName} : Total Price: Rs.${products.totalPrice}`}
                 stripeKey="pk_test_51OrxZNSD2wp2tswRa9uRElxaLNi9Z6og8VS2wmxHKKI6nI815NnXABIK6CrbhPfHx3lIwqX2J0nvqNaOa9nvst3B003j2uiwZd"
                 token={makePayment}
                 amount={products.totalPrice * 100}
@@ -140,7 +104,7 @@ const SingleProducts = ({ loading, setLoading }) => {
                   to=""
                   className="py-1 px-3 bg-transparent border-2 border-blue-600 transition ease-in duration-150 rounded-md hover:border-0 hover:bg-orange-600 hover:text-white text-center "
                 >
-                  Buy Now for &#8377;{products.totalPrice}
+                  Buy Now for &#8377; {products.totalPrice}
                 </button>
               </StripeCheckout>
               <button

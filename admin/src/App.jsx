@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import { useState } from "react";
 import Home from "./components/Home";
+import Orders from "./components/Orders/Orders";
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
@@ -23,6 +24,7 @@ function App() {
           />
           <Route path="/products" element={<ShowProducts />} />
           <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/orders" element={<Orders />} />
         </Routes>
       </div>
     </div>
